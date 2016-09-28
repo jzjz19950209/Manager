@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/title_p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:textSize="18sp" />
+    <View
+        android:id="@+id/hor_div"
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:layout_below="@id/title_p"
+        android:background="#6296E3" />
+
+    <View
+        android:id="@+id/ver_div"
+        android:layout_width="2sp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/hor_div"
+        android:layout_marginLeft="40sp"
+        android:background="#6296E3" />
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="#6296E3"
+        android:layout_alignParentRight="true"
+        />
+    <!--<Spinner-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/spinner"-->
+        <!--android:spinnerMode="dropdown"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:layout_toRightOf="@+id/ver_div"-->
+        <!--android:layout_below="@id/hor_div"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</Spinner>-->
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv"
+        android:scrollbars="none"
+        android:paddingLeft="17sp"
+        android:layout_below="@+id/hor_div"
+        android:layout_marginLeft="23sp"
+        android:background="@null"
+        android:clickable="false"
+        android:divider="@null"/>
+
+
+    <!--<ExpandableListView-->
+        <!--android:id="@+id/lv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/title_c"-->
+        <!--android:layout_marginLeft="32sp"-->
+        <!--android:background="@null"-->
+        <!--android:clickable="false"-->
+        <!--android:divider="@null" >-->
+    <!--</ExpandableListView>-->
+
+</RelativeLayout>

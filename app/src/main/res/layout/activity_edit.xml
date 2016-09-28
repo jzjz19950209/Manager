@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.qf.manager.edit_Activity">
+    <include layout="@layout/title"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="24dp"
+        android:id="@+id/currentDate"
+        android:layout_height="40dp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textSize="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_height="match_parent"
+        android:text="年"/>
+    <EditText
+        android:layout_width="0dp"
+        android:inputType="number"
+        android:gravity="center"
+        android:layout_weight="2"
+        android:id="@+id/year"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="match_parent"
+            android:text="/月"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:inputType="number"
+            android:id="@+id/month"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="match_parent"
+            android:text="/日"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:id="@+id/day"
+            android:inputType="number"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:id="@+id/rg"
+        android:layout_marginRight="10dp"
+        android:paddingRight="20dp"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="收入"
+            android:textSize="20dp"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="支出"
+            android:textSize="20dp"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RadioGroup>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="22dp"
+        android:text="标签:"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:textSize="24dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/tag"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:text="内容"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:textSize="26dp"-->
+        <!--android:layout_height="wrap_content" />-->
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:maxLines="5"-->
+        <!--android:id="@+id/content"-->
+        <!--android:layout_height="wrap_content" />-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:text="金额:"
+        android:textSize="22dp"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/money"
+        android:inputType="numberDecimal"
+        android:textSize="24dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:onClick="saveNew"
+        android:text="保存"
+        android:textColor="#fff"
+        android:background="@drawable/button_f"
+        android:textSize="26dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="50dp" />
+
+</LinearLayout>
