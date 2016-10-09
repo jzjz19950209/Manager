@@ -5,28 +5,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import cn.bmob.v3.Bmob;
 
 //http://www.open-open.com/lib/view/open1446429625717.html
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerlayout;
     private Button button;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bmob.initialize(this, "08c75fae7d012cfb08a09e095665d0b2");
         button = (Button) findViewById(R.id.button);
-        drawerlayout = new DrawerLayout(this);
         drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-        setTitle();
+        toolbar=(Toolbar) findViewById(R.id.toolbar);
 
+        setTitle();
         //打开、关闭drawerlayout
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,36 +50,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //设置标题栏内容
-    private void setTitle(){
+    private void setTitle() {
         Intent intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(intent.getStringExtra("extra_username"));
         actionBar.setIcon(R.mipmap.ic_launcher);
         actionBar.setSubtitle(UserMethod.getTime());
+        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerlayout,toolbar,0,0);
+        drawerlayout.addDrawerListener(toggle);
+        toggle.syncState();
+
     }
 
     //监听drawerlayout状态变化
-    private void drawerlayout_listener(){
-        drawerlayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+    private void drawerlayout_listener() {
+        drawerlayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             //位置改变
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
 
             }
+
             //打开
             @Override
             public void onDrawerOpened(View drawerView) {
                 button.setBackgroundResource(R.drawable.an_close);
             }
+
             //关闭
             @Override
             public void onDrawerClosed(View drawerView) {
-                 button.setBackgroundResource(R.drawable.an);
+                button.setBackgroundResource(R.drawable.an);
             }
+
             //状态改变
             @Override
             public void onDrawerStateChanged(int newState) {
@@ -84,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editNew(View view) {
-        startActivity(new Intent(this,edit_Activity.class));
+        startActivity(new Intent(this, edit_Activity.class));
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //获取菜单管理器
@@ -106,10 +118,28 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (drawerlayout.isDrawerOpen(Gravity.LEFT)) {
+                    drawerlayout.closeDrawer(Gravity.LEFT);
+                } else {
+                    drawerlayout.openDrawer(Gravity.LEFT);
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onBackPressed() {
-        new UserMethod().ShowDialog(MainActivity.this);
+        if (drawerlayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerlayout.closeDrawer(Gravity.LEFT);
+        } else {
+            new UserMethod().ShowDialog(MainActivity.this);
+        }
+
     }
 
 

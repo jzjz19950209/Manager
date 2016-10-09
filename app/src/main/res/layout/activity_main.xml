@@ -15,10 +15,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#6296E3"
-        app:title="title">
+        android:background="#6296E3">
     </android.support.v7.widget.Toolbar>
-    <android.support.v4.widget.DrawerLayout
+<android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,7 +50,6 @@
             android:layout_gravity="left"
             android:background="#fff"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,13 +60,14 @@
                 android:layout_width="match_parent"
                 android:background="#6296E3"
                 android:layout_height="2dp" />
+
             <!--<ListView-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="match_parent">-->
             <!--</ListView>-->
             <com.example.qf.manager.drawerlayout.TimeLineLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             </com.example.qf.manager.drawerlayout.TimeLineLayout>
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
