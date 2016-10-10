@@ -1,7 +1,6 @@
 package com.example.qf.manager;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,17 +9,20 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qf.manager.save.DBHelper_Data;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class edit_Activity extends AppCompatActivity {
     private TextView textView,currentDate;
-    private EditText year,month,day,tag,money;
-    private SQLiteDatabase db_data;
+    private EditText year,month,day,notes,money;
     private RadioGroup rg;
+    private boolean isIncome=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        Bmob.initialize(this, "08c75fae7d012cfb08a09e095665d0b2");
         textView= (TextView) findViewById(R.id.textview_title);
         currentDate= (TextView) findViewById(R.id.currentDate);
         textView.setText("新的账单");
@@ -29,19 +31,18 @@ public class edit_Activity extends AppCompatActivity {
         year= (EditText) findViewById(R.id.year);
         month= (EditText) findViewById(R.id.month);
         day= (EditText) findViewById(R.id.day);
-        tag= (EditText) findViewById(R.id.tag);
+        notes= (EditText) findViewById(R.id.notes);
         money= (EditText) findViewById(R.id.money);
-        DBHelper_Data dbHelper_data=new DBHelper_Data(this);
-        db_data=dbHelper_data.getReadableDatabase();
+        rg.check(R.id.out);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
-                    case 0:
-                        
+                    case R.id.in:
+                        isIncome=true;
                         break;
-                    case 1:
-
+                    case R.id.out:
+                        isIncome=false;
                         break;
                 }
             }
@@ -52,27 +53,37 @@ public class edit_Activity extends AppCompatActivity {
         String year_input=year.getText().toString();
         String month_input=month.getText().toString();
         String day_input=day.getText().toString();
-        String tag_input=tag.getText().toString();
+        String notes_input=notes.getText().toString();
         String money_input=money.getText().toString();
+        Intent intent=getIntent();
+        String userName=intent.getStringExtra("username");
         if(!year_input.equals("") && !month_input.equals("") && !day_input.equals("") && !money_input.equals("")){
-            int n=Integer.parseInt(month_input);
+            int m=Integer.parseInt(month_input);
             int d=Integer.parseInt(day_input);
-            if(n>12||n<1){
+            if(m>12||m<1){
                 Toast.makeText(edit_Activity.this, "月份输入有误！", Toast.LENGTH_SHORT).show();
             }
             else if(d>31||d<1){
                 Toast.makeText(edit_Activity.this, "日期输入有误！", Toast.LENGTH_SHORT).show();
             }else {
-                String date = year_input + "/" + month_input + "/" + day_input;
-                ContentValues values = new ContentValues();
-                values.put("date", date);
-                values.put("tag", tag_input);
-                values.put("money", money_input);
-                long insert = db_data.insert(DBHelper_Data.DATATABLE, "userdata", values);
-                if (insert != -1) {
-                    Toast.makeText(edit_Activity.this, "添加成功！", Toast.LENGTH_SHORT).show();
-                }
-                finish();
+                String time = year_input + "/" + month_input + "/" + day_input;
+                User_data user_data=new User_data();
+                user_data.setUserName(userName);
+                user_data.setNotes(notes_input);
+                user_data.setTime(time);
+                user_data.setMoney(Double.parseDouble(money_input));
+                user_data.setIncome(isIncome);
+                user_data.save(new SaveListener<String>() {
+                    @Override
+                    public void done(String s, BmobException e) {
+                        if(e==null){
+                            Toast.makeText(edit_Activity.this, "网络保存成功！", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else {
+                            Toast.makeText(edit_Activity.this, "网络保存失败！", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         }else{
             Toast.makeText(edit_Activity.this, "嘿！你输漏了>_< !", Toast.LENGTH_SHORT).show();
@@ -80,4 +91,5 @@ public class edit_Activity extends AppCompatActivity {
 
 
     }
+
 }

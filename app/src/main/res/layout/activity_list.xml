@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".list_Activity">
+    <!--
+       CoordinatorLayout整体上分为两大块：
+       1.头部可折叠区域（AppBarLayout）
+       2.底部的滑动区域 （NestedScrollView/RecyclerView）
+       -->
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorjz" />
+
+    </android.support.design.widget.AppBarLayout>
+    <!--
+            app:layout_scrollFlags="scroll" 设置头部的折叠模式
+            scroll 当底部开始滚动时，头部也跟着滚动
+            enterAlways 一旦底部的控件向下滚动，头部就显示出来
+            enterAlwaysCollapsed 底部的滑动控件见顶的时候，头部显示出来
+            exitUntilCollapsed 当头部折叠到最小高度（Toolbar的高度）时就不再折叠
+            snap 头部在折叠的过程中会就近停靠
+
+            app:contentScrim="@color/colorPrimary" 头部折叠完后，Toolbar所显示的颜色
+            -->
+    <include layout="@layout/content_list" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:backgroundTint="@color/colorjz"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add" />
+
+</android.support.design.widget.CoordinatorLayout>
