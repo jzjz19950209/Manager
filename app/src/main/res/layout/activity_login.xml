@@ -106,4 +106,13 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/button_register"
         android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="18dp"
+        android:id="@+id/forget_pwd"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

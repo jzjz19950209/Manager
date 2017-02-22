@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by qf on 2016/8/27.
  */
-public class UserMethod {
+public class UserMethodUtils {
 
 
     public void ShowDialog(final Context context){

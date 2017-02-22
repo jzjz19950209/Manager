@@ -19,7 +19,6 @@
         android:paddingLeft="12dp"
         android:gravity="center"
         android:paddingTop="18dp"
-        android:text="11月24号"
         android:textSize="22sp" />
 
 </LinearLayout>

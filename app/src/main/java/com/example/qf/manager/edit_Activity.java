@@ -26,7 +26,7 @@ public class edit_Activity extends AppCompatActivity {
         textView= (TextView) findViewById(R.id.textview_title);
         currentDate= (TextView) findViewById(R.id.currentDate);
         textView.setText("新的账单");
-        currentDate.setText("当前日期："+UserMethod.getTime());
+        currentDate.setText("当前日期："+ UserMethodUtils.getTime());
         rg= (RadioGroup) findViewById(R.id.rg);
         year= (EditText) findViewById(R.id.year);
         month= (EditText) findViewById(R.id.month);

@@ -9,9 +9,20 @@ public class Year {
     private String year_name;
     private List<Month> monthList;
 
+    public Year() {
+    }
+
     public Year(String year_name, List<Month> monthList) {
         this.year_name = year_name;
         this.monthList = monthList;
+    }
+
+    @Override
+    public String toString() {
+        return "Year{" +
+                "year_name='" + year_name + '\'' +
+                ", monthList=" + monthList +
+                '}';
     }
 
     public String getYear_name() {

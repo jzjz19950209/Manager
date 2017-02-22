@@ -9,9 +9,20 @@ public class Month {
     private String month_name;
     private List<Day> dayList;
 
+    public Month() {
+    }
+
     public Month(String month_name, List<Day> dayList) {
         this.month_name = month_name;
         this.dayList = dayList;
+    }
+
+    @Override
+    public String toString() {
+        return "Month{" +
+                "month_name='" + month_name + '\'' +
+                ", dayList=" + dayList +
+                '}';
     }
 
     public String getMonth_name() {

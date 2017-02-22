@@ -3,10 +3,12 @@ package com.example.qf.manager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -22,6 +24,7 @@ public class login_Activity extends AppCompatActivity {
     private EditText editText_name;
     private EditText editText_pwd;
     private Button button_clear;
+    private TextView forget_pwd;
     private String userName, password;
     private Intent intent;
     private ProgressBar progressBar;
@@ -38,7 +41,9 @@ public class login_Activity extends AppCompatActivity {
         button_clear = (Button) findViewById(R.id.button_clear);
         editText_name = (EditText) findViewById(R.id.username);
         editText_pwd = (EditText) findViewById(R.id.password);
+        forget_pwd= (TextView) findViewById(R.id.forget_pwd);
         progressBar= (ProgressBar) findViewById(R.id.login_progressbar);
+        forget_pwd.setText(Html.fromHtml("<u>"+"忘记密码?"+"</u>"));
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +71,12 @@ public class login_Activity extends AppCompatActivity {
                 startActivity(new Intent(login_Activity.this, register_Activity.class));
             }
         });
+        forget_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -87,7 +98,7 @@ public class login_Activity extends AppCompatActivity {
                             Toast.makeText(login_Activity.this, "登录成功！", Toast.LENGTH_SHORT).show();
                             intent.putExtra("extra_username", userName);
                             startActivity(intent);
-                            editText_pwd.setText("");
+                            //editText_pwd.setText("");
                             progressBar.setVisibility(View.GONE);
                             result=true;
                             return;

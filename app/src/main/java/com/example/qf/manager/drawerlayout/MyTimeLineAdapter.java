@@ -1,6 +1,7 @@
 package com.example.qf.manager.drawerlayout;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class MyTimeLineAdapter extends BaseExpandableListAdapter{
         }else{
             holder= (GroupHolder) convertView.getTag();
         }
-        holder.group_tv.setText(yearList.get(groupPosition).getYear_name());
+        holder.group_tv.setText(yearList.get(groupPosition).getYear_name()+" 年");
         return convertView;
     }
     @Override
@@ -82,8 +83,13 @@ public class MyTimeLineAdapter extends BaseExpandableListAdapter{
         }else{
             holder= (ChildHolder) convertView.getTag();
         }
-        holder.child_tv.setText(yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name());
+        holder.child_tv.setText(yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name()+" 月份");
+        holder.child_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         return convertView;
     }
 

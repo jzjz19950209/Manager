@@ -20,7 +20,7 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class register_Activity extends AppCompatActivity implements View.OnClickListener{
     private Button register_ensure,register_clear,register_cancel;
-    private EditText register_name,register_password1,register_password2;
+    private EditText register_name,register_password1,register_password2,phoneNum;
     private TextView textView;
     private ProgressBar progressBar;
 
@@ -38,6 +38,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
         register_name= (EditText) findViewById(R.id.register_name);
         register_password1= (EditText) findViewById(R.id.register_password1);
         register_password2= (EditText) findViewById(R.id.register_password2);
+        phoneNum= (EditText) findViewById(R.id.phoneNum);
         progressBar= (ProgressBar) findViewById(R.id.progressbar);
         register_ensure.setOnClickListener(this);
         register_clear.setOnClickListener(this);
@@ -52,10 +53,11 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                 String name=register_name.getText().toString();
                 String password1=register_password1.getText().toString();
                 String password2=register_password2.getText().toString();
-                if (!name.equals("") && !password1.equals("")&&!password2.equals("")) {
+                String phone_num=phoneNum.getText().toString();
+                if (!name.equals("") && !password1.equals("")&&!password2.equals("")&&!phone_num.equals("")) {
                     if(password1.equals(password2)){
                         name = name.trim();
-                        register(name,password1);
+                        register(name,password1,phone_num);
                     }else {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(register_Activity.this, "两次密码不一致！", Toast.LENGTH_SHORT).show();
@@ -70,6 +72,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                 register_name.setText("");
                 register_password1.setText("");
                 register_password2.setText("");
+                phoneNum.setText("");
                 break;
             case R.id.register_cancel:
                 startActivity(new Intent(register_Activity.this,login_Activity.class));
@@ -78,7 +81,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void register(final String name, final String password){
+    public void register(final String name, final String password, final String phone_num){
         BmobQuery<User> bmobQuery=new BmobQuery<>();
         bmobQuery.findObjects(new FindListener<User>() {
             @Override
@@ -92,6 +95,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                         }
                     }
                     User userNew = new User(name, password);
+                    userNew.setPhoneNum(phone_num);
                     userNew.save(new SaveListener<String>() {
                         @Override
                         public void done(String objectId, BmobException e) {
