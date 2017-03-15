@@ -1,4 +1,4 @@
-package com.example.qf.manager;
+package com.example.qf.manager.Model.Bean;
 
 import cn.bmob.v3.BmobObject;
 
@@ -10,10 +10,10 @@ public class User_data extends BmobObject {
     private String time;
     private String notes;
     private double money;
-    private boolean isIncome;
+    private int isIncome;
     public User_data(){}
 
-    public User_data(String userName, double money, String notes, String time,boolean isIncome) {
+    public User_data(String userName, double money, String notes, String time,int isIncome) {
         this.userName = userName;
         this.money = money;
         this.notes = notes;
@@ -49,15 +49,16 @@ public class User_data extends BmobObject {
         return money;
     }
 
+
     public void setMoney(double money) {
         this.money = money;
     }
 
-    public boolean isIncome() {
+    public int isIncome() {
         return isIncome;
     }
 
-    public void setIncome(boolean income) {
+    public void setIncome(int income) {
         isIncome = income;
     }
 }

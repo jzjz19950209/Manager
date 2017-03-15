@@ -1,13 +1,13 @@
-package com.example.qf.manager.drawerlayout;
+package com.example.qf.manager.View.Adapter;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.example.qf.manager.Model.Bean.Year;
 import com.example.qf.manager.R;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class MyTimeLineAdapter extends BaseExpandableListAdapter{
         return convertView;
     }
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildHolder holder=null;
         if (convertView==null){
             holder=new ChildHolder();
@@ -87,7 +87,7 @@ public class MyTimeLineAdapter extends BaseExpandableListAdapter{
         holder.child_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myCallBack.click(groupPosition,childPosition);
             }
         });
         return convertView;
@@ -103,5 +103,12 @@ public class MyTimeLineAdapter extends BaseExpandableListAdapter{
 
     class ChildHolder {
         TextView child_tv;
+    }
+    public interface MyCallBack{
+        void click(int groupPosition,int childPosition);
+    }
+    public MyCallBack myCallBack;
+    public void setMyCallBack(MyCallBack myCallBack){
+        this.myCallBack=myCallBack;
     }
 }

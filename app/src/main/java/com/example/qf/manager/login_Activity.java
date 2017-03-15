@@ -1,6 +1,7 @@
 package com.example.qf.manager;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -11,6 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qf.manager.Model.Bean.User;
+
+import java.io.File;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -36,6 +40,9 @@ public class login_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Bmob.initialize(this, "08c75fae7d012cfb08a09e095665d0b2");
         //getSupportActionBar().hide();
+        //UserMethodUtils.createFile("userInfo.db");
+        UserMethodUtils.CreateDataBase_data();
+        UserMethodUtils.CreateDataBase_user();
         button_login = (Button) findViewById(R.id.button_login);
         button_register = (Button) findViewById(R.id.button_register);
         button_clear = (Button) findViewById(R.id.button_clear);
@@ -53,7 +60,14 @@ public class login_Activity extends AppCompatActivity {
                 if (userName.equals("") || password.equals("")) {
                     Toast.makeText(login_Activity.this, "姓名或密码不能为空！", Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(userName, password);
+                    //Login(userName, password);
+                    boolean b = UserMethodUtils.searchUser(login_Activity.this,UserMethodUtils.sql, userName, password);
+                    if (b){
+                        UserMethodUtils.currentUserName = userName;
+//                        Intent intent=new Intent(login_Activity.this,list_Activity.class);
+                        //intent.putExtra("extra_username", userName);
+                        startActivity(intent);
+                    }
                 }
             }
         });

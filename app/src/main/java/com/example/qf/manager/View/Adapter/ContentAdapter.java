@@ -1,0 +1,117 @@
+package com.example.qf.manager.View.Adapter;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.qf.manager.Model.Bean.Day;
+import com.example.qf.manager.Model.Bean.User_data;
+import com.example.qf.manager.R;
+import com.example.qf.manager.Model.Bean.Year;
+import com.example.qf.manager.UserMethodUtils;
+import com.example.qf.manager.detail_Activity;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by jzjz on 2017/2/22.
+ */
+
+public class ContentAdapter extends BaseAdapter {
+    private List<Year> yearList;
+    private Context context;
+    private LayoutInflater inflater;
+    private List<Day> days_list;
+    private List<Day> days_deleteContain;
+    private int year_position,month_position;
+    private List<User_data> user_dataList;
+    public ContentAdapter(List<Year> yearList,List<Day> days,List<User_data> user_dataList, Context context,int n,int m) {
+        this.yearList = yearList;
+        this.context = context;
+        this.user_dataList=user_dataList;
+        inflater = LayoutInflater.from(context);
+        days_list=days;
+        year_position=n;
+        month_position=m;
+        days_deleteContain = UserMethodUtils.DeleteContain(days);
+    }
+
+    @Override
+    public int getCount() {
+        return days_deleteContain.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return days_deleteContain.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder=null;
+        String result_time=null;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.content_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.content_time= (TextView) convertView.findViewById(R.id.content_time);
+            viewHolder.line= (LinearLayout) convertView.findViewById(R.id.line);
+            viewHolder.note_content_week= (TextView) convertView.findViewById(R.id.note_content_week);
+            viewHolder.note_num= (TextView) convertView.findViewById(R.id.note_num);
+            viewHolder.note_more= (ImageButton) convertView.findViewById(R.id.note_more);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder= (ViewHolder) convertView.getTag();
+        }
+        result_time=yearList.get(year_position).getYear_name()+"-"+
+                yearList.get(year_position).getMonthList().get(month_position).getMonth_name()+"-"+
+                days_deleteContain.get(position).getDay_name();
+        viewHolder.content_time.setText(""+result_time);
+        viewHolder.note_content_week.setText("星期*");
+        viewHolder.note_num.setText(""+ UserMethodUtils.ContainTimes(days_list,days_deleteContain.get(position).getDay_name())+"条");
+        viewHolder.note_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "菜单", Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewHolder.line.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(UserMethodUtils.currentDate.length()<8){
+                    UserMethodUtils.currentDate+="/"+days_deleteContain.get(position).getDay_name();
+                }else {
+                    int index = UserMethodUtils.currentDate.lastIndexOf("/");
+                    UserMethodUtils.currentDate= UserMethodUtils.currentDate.substring(0, index);
+                    UserMethodUtils.currentDate +="/"+days_deleteContain.get(position).getDay_name();
+                }
+                Intent intent=new Intent(context,detail_Activity.class);
+                intent.putExtra("user_data", (Serializable) user_dataList);
+                context.startActivity(intent);
+            }
+        });
+
+        return convertView;
+    }
+    class ViewHolder {
+        TextView content_time, note_content_week, note_num;
+        ImageButton note_more;
+        LinearLayout line;
+    }
+
+}

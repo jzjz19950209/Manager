@@ -29,12 +29,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".welcome.welcome_Activity"
+            android:name=".welcome_Activity"
             android:launchMode="singleTop" />
         <activity android:name=".list_Activity" />
         <activity android:name=".register_Activity" />
         <activity android:name=".edit_Activity" />
-        <activity android:name=".alterPwd_Activity"></activity>
+        <activity android:name=".alterPwd_Activity" />
+        <activity android:name=".detail_Activity"></activity>
     </application>
 
 </manifest>

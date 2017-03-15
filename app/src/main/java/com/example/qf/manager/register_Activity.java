@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qf.manager.Model.Bean.User;
+
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -23,7 +25,6 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
     private EditText register_name,register_password1,register_password2,phoneNum;
     private TextView textView;
     private ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,15 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                 if (!name.equals("") && !password1.equals("")&&!password2.equals("")&&!phone_num.equals("")) {
                     if(password1.equals(password2)){
                         name = name.trim();
-                        register(name,password1,phone_num);
+                        //register(name,password1,phone_num);
+                        boolean b = UserMethodUtils.AddUser(UserMethodUtils.sql, name, password1, phone_num);
+                        if (b){
+                            Toast.makeText(this, "注册成功！", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else {
+                            Toast.makeText(this, "用户已存在！", Toast.LENGTH_SHORT).show();
+                        }
+
                     }else {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(register_Activity.this, "两次密码不一致！", Toast.LENGTH_SHORT).show();

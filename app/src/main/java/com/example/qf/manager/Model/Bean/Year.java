@@ -1,4 +1,4 @@
-package com.example.qf.manager.drawerlayout;
+package com.example.qf.manager.Model.Bean;
 
 import java.util.List;
 

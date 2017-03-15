@@ -1,4 +1,4 @@
-package com.example.qf.manager.drawerlayout;
+package com.example.qf.manager.Model.Bean;
 
 /**
  * Created by qf on 2016/9/10.

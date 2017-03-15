@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_detail_"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.qf.manager.detail_Activity">
+    <include layout="@layout/title"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:text="详细内容"
+        android:textSize="20dp"
+        android:id="@+id/t"
+        android:gravity="center"
+        android:textColor="#ffff"
+        android:layout_height="50dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/t"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.example.qf.manager.View.MyListView
+                android:layout_width="match_parent"
+                android:id="@+id/detail_listview"
+                android:layout_height="match_parent">
+            </com.example.qf.manager.View.MyListView>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

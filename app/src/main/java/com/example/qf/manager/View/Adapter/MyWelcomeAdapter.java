@@ -1,4 +1,4 @@
-package com.example.qf.manager.welcome;
+package com.example.qf.manager.View.Adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

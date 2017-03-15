@@ -1,4 +1,4 @@
-package com.example.qf.manager.welcome;
+package com.example.qf.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.qf.manager.login_Activity;
-import com.example.qf.manager.R;
+import com.example.qf.manager.View.Adapter.MyWelcomeAdapter;
 
 public class welcome_Activity extends AppCompatActivity {
     private ViewPager viewPager;

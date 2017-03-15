@@ -1,8 +1,8 @@
 package com.example.qf.manager;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -15,69 +15,81 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.qf.manager.drawerlayout.Date;
-import com.example.qf.manager.drawerlayout.Day;
-import com.example.qf.manager.drawerlayout.Month;
-import com.example.qf.manager.drawerlayout.MyTimeLineAdapter;
-import com.example.qf.manager.drawerlayout.OnLoadDataListener;
-import com.example.qf.manager.drawerlayout.TimeLineLayout;
-import com.example.qf.manager.drawerlayout.Year;
+import com.example.qf.manager.Model.Bean.User_data;
+import com.example.qf.manager.Presenter.DownLoadPresenter;
+import com.example.qf.manager.Presenter.FindLocalPresenter;
+import com.example.qf.manager.View.Adapter.ContentAdapter;
+import com.example.qf.manager.Model.Bean.Date;
+import com.example.qf.manager.Model.Bean.Day;
+import com.example.qf.manager.Model.Bean.Month;
+import com.example.qf.manager.View.Adapter.MyTimeLineAdapter;
+import com.example.qf.manager.View.IListActivityView;
+import com.example.qf.manager.Model.Bean.Year;
+import com.example.qf.manager.View.MyScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-
-public class list_Activity extends AppCompatActivity {
+public class list_Activity extends AppCompatActivity implements IListActivityView{
     private DrawerLayout drawerlayout;
-    private String userName;
     private TextView title_p;
     private ExpandableListView lv;
     private String[] timeArr;
     private List<Date> dateList = new ArrayList<>();
-    private OnLoadDataListener onLoadDataListener=new OnLoadDataListener() {
-        @Override
-        public void onResponse(List<Date> list) {
-            addDate(list);
-
-        }
-
-        @Override
-        public void onFaile(String msg) {
-
-        }
-    };
+    private ListView notes;
+    private MyScrollView scrollView;
+    private ContentAdapter adapter;
+    private MyTimeLineAdapter myTimeLineAdapter;
+    private ImageView noContent;
+    private DownLoadPresenter downLoadPresenter=new DownLoadPresenter(this);
+    private FindLocalPresenter findLocalPresenter=new FindLocalPresenter(this);
     List<String> yearName = new ArrayList<>();
     List<String> monthName = new ArrayList<>();
     List<String> dayName = new ArrayList<>();
-
+    private int groupP=-1,childP=-1;
     List<Year> yearList = new ArrayList<>();
-    private Handler mhandler=new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title_p = (TextView) findViewById(R.id.title_p);
+        scrollView= (MyScrollView) findViewById(R.id.scrollView);
         lv = (ExpandableListView) this.findViewById(R.id.lv);
+        notes= (ListView) findViewById(R.id.notes);
+        noContent = (ImageView) findViewById(R.id.noComment);
+        //downLoadPresenter.initData();
+
         setSupportActionBar(toolbar);
-        TimeLineLayout timeLineLayout = (TimeLineLayout) findViewById(R.id.timelinelayout);
         drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
         setTitle();
-        setTimeLine();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent to_edit = new Intent(list_Activity.this, edit_Activity.class);
-                to_edit.putExtra("username", userName);
+                to_edit.putExtra("username", UserMethodUtils.currentUserName);
                 startActivity(to_edit);
+            }
+        });
+        scrollView.setOnScrollToBottomLintener(new MyScrollView.OnScrollToBottomListener() {
+            @Override
+            public void onScrollBottomListener(boolean isBottom) {
+                if(isBottom){
+                    fab.hide();
+
+                }else {
+                    fab.show();
+                }
+
             }
         });
     }
@@ -85,17 +97,28 @@ public class list_Activity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        init();
+        findLocalPresenter.initData();
         setTimeLine();
+        if (groupP!=-1&&childP!=-1){
+            myTimeLineAdapter.myCallBack.click(groupP,groupP);
+        }
     }
-
+    private void init(){
+        dateList.clear();
+        yearList.clear();
+        yearName.clear();
+        monthName.clear();
+        dayName.clear();
+    }
     private void setTitle() {
         Intent intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        userName = intent.getStringExtra("extra_username");
-        actionBar.setTitle(userName);
+        //userName = intent.getStringExtra("extra_username");
+        actionBar.setTitle(UserMethodUtils.currentUserName);
         actionBar.setIcon(R.mipmap.ic_launcher);
         actionBar.setSubtitle(UserMethodUtils.getTime());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, 0, 0);
@@ -106,40 +129,32 @@ public class list_Activity extends AppCompatActivity {
 
     private void setTimeLine() {
         title_p.setText(UserMethodUtils.getTime());
-        BmobQuery<User_data> bmobQuery = new BmobQuery<>();
-        bmobQuery.findObjects(new FindListener<User_data>() {
-            @Override
-            public void done(List<User_data> list, BmobException e) {
-                if (e == null) {
-                    //Log.d("jzjz", "done: "+Thread.currentThread().getName());
-                    for (User_data user_data : list) {
-                        if (user_data.getUserName().equals(userName)) {
-                            String time = user_data.getTime();
-                            double momey = user_data.getMoney();
-                            String notes = user_data.getNotes();
-                            boolean isIncome = user_data.isIncome();
-                            timeArr = time.split("/");
-                            yearName.add(timeArr[0]);
-                            monthName.add(timeArr[1]);
-                            dayName.add(timeArr[2]);
-                            dateList.add(new Date(timeArr[0], timeArr[1], timeArr[2]));
-//                            mhandler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    dateList.add(new Date(timeArr[0], timeArr[1], timeArr[2]));
-//                                    lv.deferNotifyDataSetChanged();
-//                                }
-//                            });
-                            //Log.d("jzjz", "done: "+yearName+","+momey+","+notes+","+isIncome);
-                        }
-                    }
-                    onLoadDataListener.onResponse(dateList);
-
-                } else {
-                    Toast.makeText(list_Activity.this, "数据请求出错！", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        BmobQuery<User_data> bmobQuery = new BmobQuery<>();
+//        bmobQuery.findObjects(new FindListener<User_data>() {
+//            @Override
+//            public void done(List<User_data> list, BmobException e) {
+//                if (e == null) {
+//                    //Log.d("jzjz", "done: "+Thread.currentThread().getName());
+//                    for (User_data user_data : list) {
+//                        if (user_data.getUserName().equals(userName)) {
+//                            String time = user_data.getTime();
+//                            double momey = user_data.getMoney();
+//                            String notes = user_data.getNotes();
+//                            boolean isIncome = user_data.isIncome();
+//                            timeArr = time.split("/");
+//                            yearName.add(timeArr[0]);
+//                            monthName.add(timeArr[1]);
+//                            dayName.add(timeArr[2]);
+//                            dateList.add(new Date(timeArr[0], timeArr[1], timeArr[2]));
+//                        }
+//                    }
+//                    onLoadDataListener.onResponse(dateList);
+//
+//                } else {
+//                    Toast.makeText(list_Activity.this, "数据请求出错！", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 //        for(int i=0;i<dayName.size();i++){
 //            dayList1.add(new Day(dayName.get(i)));
@@ -167,21 +182,14 @@ public class list_Activity extends AppCompatActivity {
 //        for (Year y:yearList){
 //            Log.d("jzjz", "setTimeLine: "+y.getYear_name()+y.getMonthList().get(0).getMonth_name());
 //        }
-
-
     }
 
-    private void addDate(List<Date> list) {
+    private void addDate(List<Date> list, final List<User_data> user_dataList) {
         String day, month, year;
-//        List<Day> dayList = new ArrayList<>();
-//        List<Month> monthList = new ArrayList<>();
         List<Day> dayList;
         List<Month> monthList;
         int index = 0;
-        boolean bool_y = true, bool_m = true, bool_d = true;
-
-
-
+        boolean bool_y = true, bool_m = true;
         if (list.size() != 0) {
             for (int i = 0; i < list.size(); i++) {
                 day = list.get(i).getDay();
@@ -193,7 +201,6 @@ public class list_Activity extends AppCompatActivity {
                     dayList.add(new Day(day));
                     monthList.add(new Month(month, dayList));
                     yearList.add(new Year(year, monthList));
-
                 } else {
                     for (Year y : yearList) {
                         if (y.getYear_name().equals(year)) {
@@ -220,56 +227,58 @@ public class list_Activity extends AppCompatActivity {
                                     dayList.add(new Day(day));
                                     yearList.get(j).getMonthList().add(new Month(month, dayList));
                                 } else {//如果月份存在
-                                    for (int p = 0; p < yearList.get(j).getMonthList().get(index).getDayList().size(); p++) {
-                                        if (yearList.get(j).getMonthList().get(index).getDayList().get(p).equals(day)) {
-                                            bool_d = false;
-                                        }
-                                    }
-                                    if (bool_d) {//如果号数不存在
-                                        yearList.get(j).getMonthList().get(index).getDayList().add(new Day(day));
-                                    }
+                                    yearList.get(j).getMonthList().get(index).getDayList().add(new Day(day));
                                 }
                             }
                         }
-
                     }
                 }
-                bool_d=true;
                 bool_m=true;
                 bool_y=true;
             }
-
         }
         yearList=sort(yearList);
-        lv.setAdapter(new MyTimeLineAdapter(this, yearList));
-    }
-    private void init(){
-        List<Month> lm;
-        List<Day> ld;
-        for (int i = 0; i < 5; i++) {
-            lm=new ArrayList<>();
-            for (int j = 0; j < 12; j++) {
-                ld=new ArrayList<>();
-                for (int k = 0; k < 30; k++) {
-                    ld.add(new Day(""+k));
+        myTimeLineAdapter = new MyTimeLineAdapter(list_Activity.this, yearList);
+        myTimeLineAdapter.setMyCallBack(new MyTimeLineAdapter.MyCallBack() {
+            @Override
+            public void click(int groupPosition, int childPosition) {
+                groupP=groupPosition;
+                childP=childPosition;
+                UserMethodUtils.currentDate="";
+                UserMethodUtils.currentDate=yearList.get(groupPosition).getYear_name()+"/"+
+                        yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name();
+                List<Day> days = sort_day(yearList, groupPosition, childPosition);
+                adapter=new ContentAdapter(yearList,days,user_dataList,list_Activity.this,groupPosition,childPosition);
+                ViewGroup.LayoutParams lp = notes.getLayoutParams();
+                int count = UserMethodUtils.DeleteContain(days).size();
+                int totalHeight = 0;
+                View view = null;
+                for (int i = 0; i < count; i++) {
+                    view = adapter.getView(i, null, notes);
+                    view.measure(0, 0);
+                    totalHeight += view.getMeasuredHeight();
                 }
-                lm.add(new Month(""+j,ld));
+                lp.height = totalHeight;
+                notes.requestLayout();
+                notes.setAdapter(adapter);
+                noContent.setVisibility(View.GONE);
+                drawerlayout.closeDrawer(Gravity.LEFT);
             }
-            yearList.add(new Year(""+(i+2016),lm));
-        }
-        lv.setAdapter(new MyTimeLineAdapter(this, yearList));
+        });
+        lv.setAdapter(myTimeLineAdapter);
     }
 
+
     private List<Year> sort(List<Year> years){
-        Year tempYear=null;
-        Month tempMonth=null;
+        Year tempYear = null;
+        Month tempMonth = null;
         int year_1,year_2,month_1,month_2;
         for (int i = 0; i < years.size()-1; i++) {
             for (int j = 0; j < years.size() - i - 1; j++) {
-                year_1= Integer.parseInt(years.get(j).getYear_name());
+                year_1 = Integer.parseInt(years.get(j).getYear_name());
                 year_2 = Integer.parseInt(years.get(j+1).getYear_name());
-                if (year_1>year_2){
-                    tempYear=years.get(j);
+                if (year_1 > year_2){
+                    tempYear = years.get(j);
                     years.set(j,years.get(j+1));
                     years.set(j+1,tempYear);
                 }
@@ -278,10 +287,10 @@ public class list_Activity extends AppCompatActivity {
         for (int i = 0; i < years.size(); i++) {
             for (int j = 0; j < years.get(i).getMonthList().size()-1; j++) {
                 for (int k = 0; k < years.get(i).getMonthList().size()-1-j; k++) {
-                    month_1=Integer.parseInt(years.get(i).getMonthList().get(k).getMonth_name());
-                    month_2=Integer.parseInt(years.get(i).getMonthList().get(k+1).getMonth_name());
+                    month_1 = Integer.parseInt(years.get(i).getMonthList().get(k).getMonth_name());
+                    month_2 = Integer.parseInt(years.get(i).getMonthList().get(k+1).getMonth_name());
                     if (month_1>month_2){
-                        tempMonth=years.get(i).getMonthList().get(k);
+                        tempMonth = years.get(i).getMonthList().get(k);
                         years.get(i).getMonthList().set(k,years.get(i).getMonthList().get(k+1));
                         years.get(i).getMonthList().set(k+1,tempMonth);
                     }
@@ -290,7 +299,22 @@ public class list_Activity extends AppCompatActivity {
         }
         return years;
     }
-
+    public List<Day> sort_day(List<Year> years,int groupPosition, int childPosition){
+        List<Day> dayList = years.get(groupPosition).getMonthList().get(childPosition).getDayList();
+        Day temp;
+        for (int i = 0; i < dayList.size()-1; i++) {
+            for (int j = 0; j < dayList.size()-1-i; j++) {
+                int day_1 = Integer.parseInt(dayList.get(j).getDay_name());
+                int day_2 = Integer.parseInt(dayList.get(j+1).getDay_name());
+                if (day_1<day_2){
+                    temp = dayList.get(j);
+                    dayList.set(j,dayList.get(j+1));
+                    dayList.set(j+1,temp);
+                }
+            }
+        }
+        return  dayList;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //获取菜单管理器
@@ -335,4 +359,19 @@ public class list_Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void UpdateData(List<User_data> list) {
+        for (User_data user_data : list) {
+                String time = user_data.getTime();
+                double momey = user_data.getMoney();
+                String notes = user_data.getNotes();
+                int isIncome = user_data.isIncome();
+                timeArr = time.split("/");
+                yearName.add(timeArr[0]);
+                monthName.add(timeArr[1]);
+                dayName.add(timeArr[2]);
+                dateList.add(new Date(timeArr[0], timeArr[1], timeArr[2]));
+        }
+        addDate(dateList,list);
+    }
 }

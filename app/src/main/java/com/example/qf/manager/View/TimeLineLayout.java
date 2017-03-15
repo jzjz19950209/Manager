@@ -1,4 +1,4 @@
-package com.example.qf.manager.drawerlayout;
+package com.example.qf.manager.View;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,7 +14,6 @@ public class TimeLineLayout extends RelativeLayout {
     public TimeLineLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.timeline,this);
-
     }
 
 }
