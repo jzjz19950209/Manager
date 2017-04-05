@@ -62,9 +62,11 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                         boolean b = UserMethodUtils.AddUser(UserMethodUtils.sql, name, password1, phone_num);
                         if (b){
                             Toast.makeText(this, "注册成功！", Toast.LENGTH_SHORT).show();
+                            UserMethodUtils.CreateDataBase_data(register_name.getText().toString());
                             finish();
                         }else {
                             Toast.makeText(this, "用户已存在！", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
 
                     }else {

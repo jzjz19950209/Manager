@@ -19,90 +19,96 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textSize="20dp"
-        android:id="@+id/currentDate"
-        android:layout_height="40dp" />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:textSize="20dp"-->
+        <!--android:id="@+id/currentDate"-->
+        <!--android:layout_height="40dp" />-->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
     android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-    <TextView
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:textSize="20dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_height="match_parent"
-        android:text="年"/>
-    <EditText
-        android:layout_width="0dp"
-        android:inputType="number"
-        android:gravity="center"
-        android:layout_weight="2"
-        android:id="@+id/year"
-        android:layout_height="wrap_content" />
-    </LinearLayout>
+    <DatePicker
+        android:layout_width="match_parent"
+        android:id="@+id/datePicker"
+        android:layout_height="100dp"></DatePicker>
+    <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="match_parent">-->
+    <!--<TextView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textSize="20dp"-->
+        <!--android:gravity="center_horizontal|center_vertical"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="年"/>-->
+    <!--<EditText-->
+        <!--android:layout_width="0dp"-->
+        <!--android:inputType="number"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_weight="2"-->
+        <!--android:id="@+id/year"-->
+        <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_height="match_parent"
-            android:text="/月"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:inputType="number"
-            android:id="@+id/month"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textSize="20dp"-->
+            <!--android:gravity="center_horizontal|center_vertical"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="/月"/>-->
+        <!--<EditText-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center"-->
+            <!--android:inputType="number"-->
+            <!--android:id="@+id/month"-->
+            <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_height="match_parent"
-            android:text="/日"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:id="@+id/day"
-            android:inputType="number"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textSize="20dp"-->
+            <!--android:gravity="center_horizontal|center_vertical"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="/日"/>-->
+        <!--<EditText-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center"-->
+            <!--android:id="@+id/day"-->
+            <!--android:inputType="number"-->
+            <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
 </LinearLayout>
     <RadioGroup
         android:layout_width="match_parent"
         android:gravity="right"
         android:id="@+id/rg"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:paddingRight="20dp"
         android:orientation="horizontal"
         android:layout_height="30dp">
         <TextView
             android:layout_width="wrap_content"
             android:text="收入"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:layout_height="wrap_content" />
         <RadioButton
             android:layout_width="wrap_content"
@@ -112,7 +118,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:text="支出"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:layout_height="wrap_content" />
         <RadioButton
             android:layout_width="wrap_content"
@@ -124,12 +130,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:textSize="22dp"
+        android:textSize="18dp"
         android:text="备注:"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:layout_marginRight="10dp"
         android:id="@+id/notes"
         android:maxLines="3"
@@ -150,13 +156,13 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
         android:text="金额:"
-        android:textSize="22dp"
+        android:textSize="18dp"
         android:layout_height="wrap_content" />
     <EditText
         android:layout_width="match_parent"
         android:id="@+id/money"
         android:inputType="numberDecimal"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content" />

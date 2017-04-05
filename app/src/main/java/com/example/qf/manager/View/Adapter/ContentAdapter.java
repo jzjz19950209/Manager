@@ -81,8 +81,8 @@ public class ContentAdapter extends BaseAdapter {
         result_time=yearList.get(year_position).getYear_name()+"-"+
                 yearList.get(year_position).getMonthList().get(month_position).getMonth_name()+"-"+
                 days_deleteContain.get(position).getDay_name();
-        viewHolder.content_time.setText(""+result_time);
-        viewHolder.note_content_week.setText("星期*");
+        viewHolder.content_time.setText(result_time);
+        viewHolder.note_content_week.setText(UserMethodUtils.DateToWeek(result_time));
         viewHolder.note_num.setText(""+ UserMethodUtils.ContainTimes(days_list,days_deleteContain.get(position).getDay_name())+"条");
         viewHolder.note_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,11 +94,11 @@ public class ContentAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if(UserMethodUtils.currentDate.length()<8){
-                    UserMethodUtils.currentDate+="/"+days_deleteContain.get(position).getDay_name();
+                    UserMethodUtils.currentDate+="-"+days_deleteContain.get(position).getDay_name();
                 }else {
                     int index = UserMethodUtils.currentDate.lastIndexOf("/");
                     UserMethodUtils.currentDate= UserMethodUtils.currentDate.substring(0, index);
-                    UserMethodUtils.currentDate +="/"+days_deleteContain.get(position).getDay_name();
+                    UserMethodUtils.currentDate +="-"+days_deleteContain.get(position).getDay_name();
                 }
                 Intent intent=new Intent(context,detail_Activity.class);
                 intent.putExtra("user_data", (Serializable) user_dataList);

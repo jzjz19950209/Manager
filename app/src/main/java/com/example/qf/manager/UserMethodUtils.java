@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class UserMethodUtils {
     public static final String USERDATA="user_data";
     public static SQLiteDatabase sql;
     public static String currentDate;
-
+    public static int groupP=-1;
+    public static int childP=-1;
     public static String currentUserName;
     public void ShowDialog(final Context context){
         //弹出对话框，通过AlertDialog.Builder创建出AlertDialog实例
@@ -121,16 +123,14 @@ public class UserMethodUtils {
         }
     }
 
-    public static SQLiteDatabase CreateDataBase_user(){
+    public static void CreateDataBase_user(){
         SQLiteDatabase db = CreateDataBase(getPath() + File.separator + "UserData.db");
         db.execSQL("CREATE TABLE IF NOT EXISTS "+USERTABLE+"(username TEXT ,password TEXT,phonenum TEXT);");
-        return db;
     }
 
-    public static SQLiteDatabase CreateDataBase_data(){
+    public static void CreateDataBase_data(String userName){
         SQLiteDatabase db = CreateDataBase(getPath() + File.separator + "UserData.db");
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+USERDATA+"(username TEXT  ,money NUMBER,notes TEXT,isIncome BOOLEAN,time TEXT);");
-        return db;
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+userName+"(_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT  ,money NUMBER,notes TEXT,isIncome BOOLEAN,time TEXT);");
     }
 
     public static boolean AddUser(SQLiteDatabase db, String userName, String password, String phoneNum){
@@ -154,16 +154,21 @@ public class UserMethodUtils {
         values.put("notes",notes);
         values.put("isIncome",isIncome);
         values.put("time",time);
-        long insert = db.insert(USERDATA, null, values);
+        long insert = db.insert(userName, null, values);
 
     }
     //登录使用
     public static boolean searchUser(Context context,SQLiteDatabase db,String username,String password){
         Cursor cursor=db.rawQuery("select * from "+USERTABLE+" where username = ? and password = ?",new String[]{username,password});
+        Cursor cursor_user=db.rawQuery("select * from "+USERTABLE+" where username = ? ",new String[]{username});
         if (cursor.getCount()>0){
             return true;
         }else {
-            Toast.makeText(context, "用户不存在!", Toast.LENGTH_SHORT).show();
+            if(cursor_user.getCount()>0) {
+                Toast.makeText(context, "密码错误！", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(context, "用户不存在!", Toast.LENGTH_SHORT).show();
+            }
             return false;
         }
     }
@@ -173,12 +178,12 @@ public class UserMethodUtils {
         if (cursor.getCount()>0){
             return true;
         }else {
-
             return false;
         }
     }
     public static List<User_data> searchData(SQLiteDatabase db,String username){
-        Cursor cursor=db.rawQuery("select * from " + USERDATA + " where username=? ",new String[]{username});
+        String table = username;
+        Cursor cursor=db.rawQuery("select * from " + table + " where username=? ",new String[]{username});
         if (cursor.getCount()>0){
             User_data user_data=null;
             List<User_data> list=new ArrayList<>();
@@ -205,11 +210,18 @@ public class UserMethodUtils {
 
     }
 
-    public static void DeleteData(SQLiteDatabase db){
-
+    public static int DeleteData(SQLiteDatabase db,int id,String userName){
+        int delete = db.delete(userName, "_id = ?",new String[]{String.valueOf(id)});
+        return delete;
     }
-    public static void UpdateData(SQLiteDatabase db){
-
+    public static int UpdateData(SQLiteDatabase db,int id,String userName,String date,int isIncome,double money,String notes){
+        ContentValues values=new ContentValues();
+        values.put("time",date);
+        values.put("isIncome",String.valueOf(isIncome));
+        values.put("money",String.valueOf(money));
+        values.put("notes",notes);
+        int update = db.update(userName, values, "_id = ?", new String[]{String.valueOf(id)});
+        return update;
     }
     //重复次数
     public static int ContainTimes(List<Day> days, String day){
@@ -235,4 +247,15 @@ public class UserMethodUtils {
         }
         return temp;
     }
+    //日期转为星期
+    public static String DateToWeek(String time){
+        String[] arr=time.split("-");
+        int year=Integer.parseInt(arr[0])-1900;
+        int month=Integer.parseInt(arr[1])-1;
+        int day=Integer.parseInt(arr[2]);
+        Date date=new Date(year,month,day);
+        String w = new SimpleDateFormat("EEEE").format(date);
+        return w;
+    }
+
 }

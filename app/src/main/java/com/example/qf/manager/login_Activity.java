@@ -41,7 +41,7 @@ public class login_Activity extends AppCompatActivity {
         Bmob.initialize(this, "08c75fae7d012cfb08a09e095665d0b2");
         //getSupportActionBar().hide();
         //UserMethodUtils.createFile("userInfo.db");
-        UserMethodUtils.CreateDataBase_data();
+        //创建数据库文件
         UserMethodUtils.CreateDataBase_user();
         button_login = (Button) findViewById(R.id.button_login);
         button_register = (Button) findViewById(R.id.button_register);
@@ -64,8 +64,6 @@ public class login_Activity extends AppCompatActivity {
                     boolean b = UserMethodUtils.searchUser(login_Activity.this,UserMethodUtils.sql, userName, password);
                     if (b){
                         UserMethodUtils.currentUserName = userName;
-//                        Intent intent=new Intent(login_Activity.this,list_Activity.class);
-                        //intent.putExtra("extra_username", userName);
                         startActivity(intent);
                     }
                 }

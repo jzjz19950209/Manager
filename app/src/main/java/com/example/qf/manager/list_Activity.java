@@ -53,7 +53,6 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
     List<String> yearName = new ArrayList<>();
     List<String> monthName = new ArrayList<>();
     List<String> dayName = new ArrayList<>();
-    private int groupP=-1,childP=-1;
     List<Year> yearList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +99,8 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         init();
         findLocalPresenter.initData();
         setTimeLine();
-        if (groupP!=-1&&childP!=-1){
-            myTimeLineAdapter.myCallBack.click(groupP,groupP);
+        if (UserMethodUtils.groupP!=-1&&UserMethodUtils.childP!=-1){
+            myTimeLineAdapter.myCallBack.click(UserMethodUtils.groupP,UserMethodUtils.childP);
         }
     }
     private void init(){
@@ -112,7 +111,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         dayName.clear();
     }
     private void setTitle() {
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.main);
         setSupportActionBar(toolbar);
@@ -242,10 +241,9 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         myTimeLineAdapter.setMyCallBack(new MyTimeLineAdapter.MyCallBack() {
             @Override
             public void click(int groupPosition, int childPosition) {
-                groupP=groupPosition;
-                childP=childPosition;
-                UserMethodUtils.currentDate="";
-                UserMethodUtils.currentDate=yearList.get(groupPosition).getYear_name()+"/"+
+                UserMethodUtils.groupP=groupPosition;
+                UserMethodUtils.childP=childPosition;
+                UserMethodUtils.currentDate=yearList.get(groupPosition).getYear_name()+"-"+
                         yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name();
                 List<Day> days = sort_day(yearList, groupPosition, childPosition);
                 adapter=new ContentAdapter(yearList,days,user_dataList,list_Activity.this,groupPosition,childPosition);
@@ -366,7 +364,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 double momey = user_data.getMoney();
                 String notes = user_data.getNotes();
                 int isIncome = user_data.isIncome();
-                timeArr = time.split("/");
+                timeArr = time.split("-");
                 yearName.add(timeArr[0]);
                 monthName.add(timeArr[1]);
                 dayName.add(timeArr[2]);
