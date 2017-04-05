@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class UserMethodUtils {
     public static final String USERTABLE="user";
-    public static final String USERDATA="user_data";
+    public static List<User_data> user_dataList;
     public static SQLiteDatabase sql;
     public static String currentDate;
     public static int groupP=-1;
@@ -188,12 +188,14 @@ public class UserMethodUtils {
             User_data user_data=null;
             List<User_data> list=new ArrayList<>();
             while (cursor.moveToNext()){
+                int id=cursor.getInt(cursor.getColumnIndex("_id"));
                 String name=cursor.getString(cursor.getColumnIndex("username"));
                 double money=cursor.getDouble(cursor.getColumnIndex("money"));
                 String notes=cursor.getString(cursor.getColumnIndex("notes"));
                 int isIncome=cursor.getInt(cursor.getColumnIndex("isIncome"));
                 String time=cursor.getString(cursor.getColumnIndex("time"));
                 user_data=new User_data();
+                user_data.setId(id);
                 user_data.setUserName(name);
                 user_data.setMoney(money);
                 user_data.setIncome(isIncome);
@@ -214,13 +216,13 @@ public class UserMethodUtils {
         int delete = db.delete(userName, "_id = ?",new String[]{String.valueOf(id)});
         return delete;
     }
-    public static int UpdateData(SQLiteDatabase db,int id,String userName,String date,int isIncome,double money,String notes){
+    public static int UpdateData(SQLiteDatabase db,String id,String userName,String date,int isIncome,String money,String notes){
         ContentValues values=new ContentValues();
         values.put("time",date);
         values.put("isIncome",String.valueOf(isIncome));
-        values.put("money",String.valueOf(money));
+        values.put("money",money);
         values.put("notes",notes);
-        int update = db.update(userName, values, "_id = ?", new String[]{String.valueOf(id)});
+        int update = db.update(userName, values, "_id = ?", new String[]{id});
         return update;
     }
     //重复次数

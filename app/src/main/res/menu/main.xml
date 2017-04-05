@@ -9,12 +9,10 @@
     ifRoom：表示如果有空间，则显示在ActionBar上，否则收起到溢出菜单中
     withText：表示文本和图标一起显示(横屏时起作用)
     collapseActionView：收起ActionView
-
-
     orderInCategory:设置item的优先级，数字越大，越靠后显示，优先级默认值为0
     -->
     <item
-        android:id="@+id/setting"
+        android:id="@+id/search"
         android:icon="@mipmap/ic_launcher"
         android:orderInCategory="101"
         android:title="查询" />

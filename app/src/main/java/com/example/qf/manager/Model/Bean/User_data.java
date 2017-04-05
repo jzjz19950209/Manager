@@ -6,6 +6,7 @@ import cn.bmob.v3.BmobObject;
  * Created by qf on 2016/10/10.
  */
 public class User_data extends BmobObject {
+    private int id;
     private String userName;
     private String time;
     private String notes;
@@ -13,12 +14,22 @@ public class User_data extends BmobObject {
     private int isIncome;
     public User_data(){}
 
-    public User_data(String userName, double money, String notes, String time,int isIncome) {
+
+    public User_data(int id, String userName, String time, String notes, double money, int isIncome) {
+        this.id = id;
         this.userName = userName;
-        this.money = money;
-        this.notes = notes;
         this.time = time;
-        this.isIncome=isIncome;
+        this.notes = notes;
+        this.money = money;
+        this.isIncome = isIncome;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserName() {

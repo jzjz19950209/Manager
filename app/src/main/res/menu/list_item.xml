@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+       <!--
+        showAsAction表示菜单项的显示方式：
+        always：表示菜单项总是显示在ActionBar上
+        never：表示菜单项收起到溢出菜单中
+        ifRoom：表示如果有空间，则显示在ActionBar上，否则收起到溢出菜单中
+        withText：表示文本和图标一起显示(横屏时起作用)
+        collapseActionView：收起ActionView
+        orderInCategory:设置item的优先级，数字越大，越靠后显示，优先级默认值为0
+        -->
+    <item android:id="@+id/delete"
+          android:title="删除"/>
+
+</menu>

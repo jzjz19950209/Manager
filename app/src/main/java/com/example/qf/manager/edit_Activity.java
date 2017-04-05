@@ -1,5 +1,6 @@
 package com.example.qf.manager;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,13 +25,14 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class edit_Activity extends AppCompatActivity {
     private TextView textView,currentDate;
-    private EditText year,month,day,notes,money;
+    private EditText notes,money;
     private RadioGroup rg;
     private int isIncome=0;
     private DatePicker datePicker;
     private ImageView saveNew;
     private Date date;
     private SimpleDateFormat sdf;
+    private String useType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,17 +40,13 @@ public class edit_Activity extends AppCompatActivity {
         Bmob.initialize(this, "08c75fae7d012cfb08a09e095665d0b2");
         textView= (TextView) findViewById(R.id.textview_title);
         sdf = new SimpleDateFormat("yyyy-MM-dd");
-        //currentDate= (TextView) findViewById(R.id.currentDate);
         saveNew= (ImageView) findViewById(R.id.saveNew);
         datePicker= (DatePicker) findViewById(R.id.datePicker);
         textView.setText("新的账单");
-//        currentDate.setText("当前日期："+ UserMethodUtils.getTime());
         rg= (RadioGroup) findViewById(R.id.rg);
-//        year= (EditText) findViewById(R.id.year);
-//        month= (EditText) findViewById(R.id.month);
-//        day= (EditText) findViewById(R.id.day);
         notes= (EditText) findViewById(R.id.notes);
         money= (EditText) findViewById(R.id.money);
+        useType = getIntent().getStringExtra("useType");
         rg.check(R.id.out);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -63,8 +61,30 @@ public class edit_Activity extends AppCompatActivity {
                 }
             }
         });
+        selectType(useType);
+    }
+    private void selectType(String useType){
         Calendar calendar=Calendar.getInstance();
-        date = new Date();
+        switch (useType){
+            case "edit":
+                date = new Date();
+                break;
+            case "alter":
+                notes.setText(getIntent().getStringExtra("note"));
+                money.setText(getIntent().getStringExtra("money"));
+                String type = getIntent().getStringExtra("type");
+                if (type.equals("支出")){
+                    rg.check(R.id.out);
+                }else {
+                    rg.check(R.id.in);
+                }
+
+                String time = getIntent().getStringExtra("time");
+                String[] arr = time.split("-");
+                date = new Date(Integer.parseInt(arr[0])-1900,Integer.parseInt(arr[1])-1,Integer.parseInt(arr[2]));
+                break;
+        }
+        calendar.setTime(date);
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -73,51 +93,33 @@ public class edit_Activity extends AppCompatActivity {
         });
     }
     public void saveNew(View view) {
-        String notes_input = notes.getText().toString();
-        String money_input = money.getText().toString();
-        if(!money_input.equals("")){
-            if(notes_input.equals("")){
-                notes_input="--";
+        if(useType.equals("edit")){
+            String notes_input = notes.getText().toString();
+            String money_input = money.getText().toString();
+            if(!money_input.equals("")){
+                if(notes_input.equals("")){
+                    notes_input="--";
+                }
+                String userName = UserMethodUtils.currentUserName;
+                UserMethodUtils.AddData(UserMethodUtils.sql,userName,Double.parseDouble(money_input),notes_input,isIncome,sdf.format(date));
+                finish();
+            }else {
+                Toast.makeText(edit_Activity.this, "请输入金额！", Toast.LENGTH_SHORT).show();
             }
-            String userName = UserMethodUtils.currentUserName;
-            UserMethodUtils.AddData(UserMethodUtils.sql,userName,Double.parseDouble(money_input),notes_input,isIncome,sdf.format(date));
+        }else if (useType.equals("alter")){
+            String time = getIntent().getStringExtra("time");
+
+            String notes_text = notes.getText().toString();
+            String id = getIntent().getStringExtra("id");
+            String money_text = money.getText().toString();
+            int update = UserMethodUtils.UpdateData(UserMethodUtils.sql, id, UserMethodUtils.currentUserName, time, isIncome, money_text, notes_text);
+            if (update==-1){
+                Toast.makeText(this, "修改失败！", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "修改成功!", Toast.LENGTH_SHORT).show();
+            }
             finish();
-        }else {
-            Toast.makeText(edit_Activity.this, "请输入金额！", Toast.LENGTH_SHORT).show();
         }
 
-//                if(!year_input.equals("") && !month_input.equals("") && !day_input.equals("") && !money_input.equals("")){
-//                    int m=Integer.parseInt(month_input);
-//                    int d=Integer.parseInt(day_input);
-//                    if(m>12||m<1){
-//                        Toast.makeText(edit_Activity.this, "月份输入有误！", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else if(d>31||d<1){
-//                        Toast.makeText(edit_Activity.this, "日期输入有误！", Toast.LENGTH_SHORT).show();
-//                    }else {
-//                        String time = year_input + "/" + month_input + "/" + day_input;
-//                        User_data user_data=new User_data();
-//                        user_data.setUserName(userName);
-//                        user_data.setNotes(notes_input);
-//                        user_data.setTime(time);
-//                        user_data.setMoney(Double.parseDouble(money_input));
-//                        user_data.setIncome(isIncome);
-//                UserMethodUtils.AddData(UserMethodUtils.sql,userName,Double.parseDouble(money_input),notes_input,isIncome,time);
-//                finish();
-////                user_data.save(new SaveListener<String>() {
-////                    @Override
-////                    public void done(String s, BmobException e) {
-////                        if(e==null){
-////                            Toast.makeText(edit_Activity.this, "网络保存成功！", Toast.LENGTH_SHORT).show();
-////                            finish();
-////                        }else {
-////                            Toast.makeText(edit_Activity.this, "网络保存失败！", Toast.LENGTH_SHORT).show();
-////                        }
-////                    }
-////                });
-//            }
-//        }else{
-//            Toast.makeText(edit_Activity.this, "嘿！你输漏了>_< !", Toast.LENGTH_SHORT).show();
-//        }
     }
 }

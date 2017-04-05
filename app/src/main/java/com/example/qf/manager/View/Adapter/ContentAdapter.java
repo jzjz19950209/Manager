@@ -3,8 +3,13 @@ package com.example.qf.manager.View.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,6 +24,7 @@ import com.example.qf.manager.R;
 import com.example.qf.manager.Model.Bean.Year;
 import com.example.qf.manager.UserMethodUtils;
 import com.example.qf.manager.detail_Activity;
+import com.example.qf.manager.list_Activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,10 +42,10 @@ public class ContentAdapter extends BaseAdapter {
     private List<Day> days_deleteContain;
     private int year_position,month_position;
     private List<User_data> user_dataList;
-    public ContentAdapter(List<Year> yearList,List<Day> days,List<User_data> user_dataList, Context context,int n,int m) {
+    public ContentAdapter(List<Year> yearList,List<Day> days, Context context,int n,int m) {
         this.yearList = yearList;
         this.context = context;
-        this.user_dataList=user_dataList;
+        this.user_dataList=UserMethodUtils.user_dataList;
         inflater = LayoutInflater.from(context);
         days_list=days;
         year_position=n;
@@ -83,25 +89,28 @@ public class ContentAdapter extends BaseAdapter {
                 days_deleteContain.get(position).getDay_name();
         viewHolder.content_time.setText(result_time);
         viewHolder.note_content_week.setText(UserMethodUtils.DateToWeek(result_time));
-        viewHolder.note_num.setText(""+ UserMethodUtils.ContainTimes(days_list,days_deleteContain.get(position).getDay_name())+"条");
+        viewHolder.note_num.setText(""+ UserMethodUtils.ContainTimes(days_list,days_deleteContain.get(position).getDay_name())+" 条");
         viewHolder.note_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "菜单", Toast.LENGTH_SHORT).show();
+                PopupMenu popup = new PopupMenu(list_Activity.instance, v);  //建立PopupMenu对象
+                popup.getMenuInflater().inflate(R.menu.list_item,popup.getMenu());
+                popup.setOnMenuItemClickListener(list_Activity.instance);   //设置点击菜单选项事件
+                popup.show();
             }
         });
+
         viewHolder.line.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(UserMethodUtils.currentDate.length()<8){
                     UserMethodUtils.currentDate+="-"+days_deleteContain.get(position).getDay_name();
                 }else {
-                    int index = UserMethodUtils.currentDate.lastIndexOf("/");
+                    int index = UserMethodUtils.currentDate.lastIndexOf("-");
                     UserMethodUtils.currentDate= UserMethodUtils.currentDate.substring(0, index);
                     UserMethodUtils.currentDate +="-"+days_deleteContain.get(position).getDay_name();
                 }
                 Intent intent=new Intent(context,detail_Activity.class);
-                intent.putExtra("user_data", (Serializable) user_dataList);
                 context.startActivity(intent);
             }
         });
@@ -113,5 +122,11 @@ public class ContentAdapter extends BaseAdapter {
         ImageButton note_more;
         LinearLayout line;
     }
-
+//    public interface OpenMenu{
+//        void open(int position);
+//    }
+//    private OpenMenu openMenu;
+//    public void setOpenMenu(OpenMenu openMenu){
+//        this.openMenu=openMenu;
+//    }
 }

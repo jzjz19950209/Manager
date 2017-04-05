@@ -40,8 +40,8 @@
                 android:focusable="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:alpha="0.8"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_more_grey"/>
         </LinearLayout>
@@ -59,7 +59,7 @@
                 android:layout_marginLeft="20dp"
                 android:text="星期五"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="@dimen/abc_text_size_small_material"/>
+                android:textSize="15dp"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"

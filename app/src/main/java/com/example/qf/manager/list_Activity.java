@@ -4,12 +4,16 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,10 +21,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.qf.manager.Model.Bean.User_data;
 import com.example.qf.manager.Presenter.DownLoadPresenter;
@@ -37,19 +43,20 @@ import com.example.qf.manager.View.MyScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class list_Activity extends AppCompatActivity implements IListActivityView{
+public class list_Activity extends AppCompatActivity implements IListActivityView,PopupMenu.OnMenuItemClickListener{
     private DrawerLayout drawerlayout;
     private TextView title_p;
     private ExpandableListView lv;
     private String[] timeArr;
     private List<Date> dateList = new ArrayList<>();
-    private ListView notes;
+    private ListView listView;
+    public static list_Activity instance;
     private MyScrollView scrollView;
     private ContentAdapter adapter;
     private MyTimeLineAdapter myTimeLineAdapter;
     private ImageView noContent;
     private DownLoadPresenter downLoadPresenter=new DownLoadPresenter(this);
-    private FindLocalPresenter findLocalPresenter=new FindLocalPresenter(this);
+    public FindLocalPresenter findLocalPresenter=new FindLocalPresenter(this);
     List<String> yearName = new ArrayList<>();
     List<String> monthName = new ArrayList<>();
     List<String> dayName = new ArrayList<>();
@@ -58,11 +65,12 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        instance = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title_p = (TextView) findViewById(R.id.title_p);
         scrollView= (MyScrollView) findViewById(R.id.scrollView);
         lv = (ExpandableListView) this.findViewById(R.id.lv);
-        notes= (ListView) findViewById(R.id.notes);
+        listView= (ListView) findViewById(R.id.notes);
         noContent = (ImageView) findViewById(R.id.noComment);
         //downLoadPresenter.initData();
 
@@ -76,6 +84,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
             public void onClick(View view) {
                 Intent to_edit = new Intent(list_Activity.this, edit_Activity.class);
                 to_edit.putExtra("username", UserMethodUtils.currentUserName);
+                to_edit.putExtra("useType","edit");
                 startActivity(to_edit);
             }
         });
@@ -91,6 +100,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
 
             }
         });
+
     }
 
     @Override
@@ -102,6 +112,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         if (UserMethodUtils.groupP!=-1&&UserMethodUtils.childP!=-1){
             myTimeLineAdapter.myCallBack.click(UserMethodUtils.groupP,UserMethodUtils.childP);
         }
+
     }
     private void init(){
         dateList.clear();
@@ -246,24 +257,25 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 UserMethodUtils.currentDate=yearList.get(groupPosition).getYear_name()+"-"+
                         yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name();
                 List<Day> days = sort_day(yearList, groupPosition, childPosition);
-                adapter=new ContentAdapter(yearList,days,user_dataList,list_Activity.this,groupPosition,childPosition);
-                ViewGroup.LayoutParams lp = notes.getLayoutParams();
+                adapter=new ContentAdapter(yearList,days,list_Activity.this,groupPosition,childPosition);
+                ViewGroup.LayoutParams lp = listView.getLayoutParams();
                 int count = UserMethodUtils.DeleteContain(days).size();
                 int totalHeight = 0;
                 View view = null;
                 for (int i = 0; i < count; i++) {
-                    view = adapter.getView(i, null, notes);
+                    view = adapter.getView(i, null, listView);
                     view.measure(0, 0);
                     totalHeight += view.getMeasuredHeight();
                 }
                 lp.height = totalHeight;
-                notes.requestLayout();
-                notes.setAdapter(adapter);
+                listView.requestLayout();
+                listView.setAdapter(adapter);
                 noContent.setVisibility(View.GONE);
                 drawerlayout.closeDrawer(Gravity.LEFT);
             }
         });
         lv.setAdapter(myTimeLineAdapter);
+        UserMethodUtils.user_dataList = user_dataList;
     }
 
 
@@ -343,6 +355,9 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                     drawerlayout.openDrawer(Gravity.LEFT);
                 }
                 break;
+            case R.id.search:
+                Toast.makeText(instance, "uu", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -371,5 +386,18 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 dateList.add(new Date(timeArr[0], timeArr[1], timeArr[2]));
         }
         addDate(dateList,list);
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.delete:
+                Toast.makeText(instance, "0", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+
     }
 }
