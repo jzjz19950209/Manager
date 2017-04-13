@@ -55,6 +55,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
     private ContentAdapter adapter;
     private MyTimeLineAdapter myTimeLineAdapter;
     private ImageView noContent;
+    private String tempTime;
     private DownLoadPresenter downLoadPresenter=new DownLoadPresenter(this);
     public FindLocalPresenter findLocalPresenter=new FindLocalPresenter(this);
     List<String> yearName = new ArrayList<>();
@@ -108,7 +109,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         super.onStart();
         init();
         findLocalPresenter.initData();
-        setTimeLine();
+        title_p.setText(UserMethodUtils.getTime());
         if (UserMethodUtils.groupP!=-1&&UserMethodUtils.childP!=-1){
             myTimeLineAdapter.myCallBack.click(UserMethodUtils.groupP,UserMethodUtils.childP);
         }
@@ -137,62 +138,6 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
 
     }
 
-    private void setTimeLine() {
-        title_p.setText(UserMethodUtils.getTime());
-//        BmobQuery<User_data> bmobQuery = new BmobQuery<>();
-//        bmobQuery.findObjects(new FindListener<User_data>() {
-//            @Override
-//            public void done(List<User_data> list, BmobException e) {
-//                if (e == null) {
-//                    //Log.d("jzjz", "done: "+Thread.currentThread().getName());
-//                    for (User_data user_data : list) {
-//                        if (user_data.getUserName().equals(userName)) {
-//                            String time = user_data.getTime();
-//                            double momey = user_data.getMoney();
-//                            String notes = user_data.getNotes();
-//                            boolean isIncome = user_data.isIncome();
-//                            timeArr = time.split("/");
-//                            yearName.add(timeArr[0]);
-//                            monthName.add(timeArr[1]);
-//                            dayName.add(timeArr[2]);
-//                            dateList.add(new Date(timeArr[0], timeArr[1], timeArr[2]));
-//                        }
-//                    }
-//                    onLoadDataListener.onResponse(dateList);
-//
-//                } else {
-//                    Toast.makeText(list_Activity.this, "数据请求出错！", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-//        for(int i=0;i<dayName.size();i++){
-//            dayList1.add(new Day(dayName.get(i)));
-//            if (!month.equals(monthName.get(i))) {
-//               // Log.d("jzjz", "setTimeLine: "+dayList1.size());
-//                List<Day> dayList = new ArrayList<>();
-//                dayList.addAll(dayList1);
-//                dayList1.clear();
-//                monthList1.add(new Month(monthName.get(i), dayList));
-//            }
-//            month =monthName.get(i);
-//
-//
-//            if (!year.equals(yearName.get(i))) {
-//                //Log.d("jzjz", "setTimeLine: "+monthList1.size());
-//                List<Month> monthList=new ArrayList<>();
-//                monthList.addAll(monthList1);
-//                monthList1.clear();
-//                yearList.add(new Year(yearName.get(i), monthList));
-//            }
-//            year = yearName.get(i);
-//
-//        }
-//        //Log.d("jzjz", "setTimeLine: "+yearList.size());
-//        for (Year y:yearList){
-//            Log.d("jzjz", "setTimeLine: "+y.getYear_name()+y.getMonthList().get(0).getMonth_name());
-//        }
-    }
 
     private void addDate(List<Date> list, final List<User_data> user_dataList) {
         String day, month, year;
@@ -272,10 +217,17 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 listView.setAdapter(adapter);
                 noContent.setVisibility(View.GONE);
                 drawerlayout.closeDrawer(Gravity.LEFT);
+                adapter.setTransferData(new ContentAdapter.TransferData() {
+                    @Override
+                    public void transfer(String result_time) {
+                        tempTime = result_time;
+                    }
+                });
             }
         });
         lv.setAdapter(myTimeLineAdapter);
         UserMethodUtils.user_dataList = user_dataList;
+
     }
 
 
@@ -356,7 +308,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 }
                 break;
             case R.id.search:
-                Toast.makeText(instance, "uu", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,search_Activity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -393,7 +345,18 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.delete:
-                Toast.makeText(instance, "0", Toast.LENGTH_SHORT).show();
+                 int index = UserMethodUtils.DeleteDataByTime(UserMethodUtils.sql, tempTime, UserMethodUtils.currentUserName);
+                 if(index==-1){
+                     Toast.makeText(instance, "删除失败！", Toast.LENGTH_SHORT).show();
+                 }else{
+                     Toast.makeText(instance, "删除成功！", Toast.LENGTH_SHORT).show();
+                     init();
+                     findLocalPresenter.initData();
+                     title_p.setText(UserMethodUtils.getTime());
+                     if (UserMethodUtils.groupP!=-1&&UserMethodUtils.childP!=-1){
+                         myTimeLineAdapter.myCallBack.click(UserMethodUtils.groupP,UserMethodUtils.childP);
+                     }
+                 }
                 return true;
             default:
                 return false;

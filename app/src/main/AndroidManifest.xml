@@ -35,7 +35,9 @@
         <activity android:name=".register_Activity" />
         <activity android:name=".edit_Activity" />
         <activity android:name=".alterPwd_Activity" />
-        <activity android:name=".detail_Activity"></activity>
+        <activity android:name=".detail_Activity" />
+        <activity android:name=".search_Activity" />
+        <activity android:name=".search_result_Activity"></activity>
     </application>
 
 </manifest>

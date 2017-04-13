@@ -29,6 +29,7 @@ import java.util.List;
 public class UserMethodUtils {
     public static final String USERTABLE="user";
     public static List<User_data> user_dataList;
+    public static List<User_data> search_dataList;
     public static SQLiteDatabase sql;
     public static String currentDate;
     public static int groupP=-1;
@@ -130,7 +131,7 @@ public class UserMethodUtils {
 
     public static void CreateDataBase_data(String userName){
         SQLiteDatabase db = CreateDataBase(getPath() + File.separator + "UserData.db");
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+userName+"(_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT  ,money NUMBER,notes TEXT,isIncome BOOLEAN,time TEXT);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+userName+"(_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT  ,money NUMBER,notes TEXT,isIncome BOOLEAN,time DATETIME);");
     }
 
     public static boolean AddUser(SQLiteDatabase db, String userName, String password, String phoneNum){
@@ -211,9 +212,26 @@ public class UserMethodUtils {
         }
 
     }
-
+    public static List<User_data> searchDataByTime(SQLiteDatabase db,String userName,Date date1,Date date2){
+        List<User_data> list = searchData(db, userName);
+        List<User_data> tempList = new ArrayList<>();
+        Date date =null;
+        for(User_data user_data:list){
+            String time = user_data.getTime();
+            String[] arr = time.split("-");
+            date = new Date(Integer.parseInt(arr[0])-1900,Integer.parseInt(arr[1])-1,Integer.parseInt(arr[2]));
+            if(date.after(date1)&&date.before(date2)||isSameDate(date1,date)||isSameDate(date2,date)){
+                tempList.add(user_data);
+            }
+        }
+        return tempList;
+    }
     public static int DeleteData(SQLiteDatabase db,int id,String userName){
         int delete = db.delete(userName, "_id = ?",new String[]{String.valueOf(id)});
+        return delete;
+    }
+    public static int DeleteDataByTime(SQLiteDatabase db,String time,String userName){
+        int delete = db.delete(userName, "time = ?", new String[]{time});
         return delete;
     }
     public static int UpdateData(SQLiteDatabase db,String id,String userName,String date,int isIncome,String money,String notes){
@@ -259,5 +277,20 @@ public class UserMethodUtils {
         String w = new SimpleDateFormat("EEEE").format(date);
         return w;
     }
+    public static boolean isSameDate(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
 
+        boolean isSameYear = cal1.get(Calendar.YEAR) == cal2
+                .get(Calendar.YEAR);
+        boolean isSameMonth = isSameYear
+                && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
+        boolean isSameDate = isSameMonth
+                && cal1.get(Calendar.DAY_OF_MONTH) == cal2
+                .get(Calendar.DAY_OF_MONTH);
+
+        return isSameDate;
+    }
 }

@@ -90,6 +90,7 @@ public class ContentAdapter extends BaseAdapter {
         viewHolder.content_time.setText(result_time);
         viewHolder.note_content_week.setText(UserMethodUtils.DateToWeek(result_time));
         viewHolder.note_num.setText(""+ UserMethodUtils.ContainTimes(days_list,days_deleteContain.get(position).getDay_name())+" 条");
+        final String finalResult_time = result_time;
         viewHolder.note_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +98,8 @@ public class ContentAdapter extends BaseAdapter {
                 popup.getMenuInflater().inflate(R.menu.list_item,popup.getMenu());
                 popup.setOnMenuItemClickListener(list_Activity.instance);   //设置点击菜单选项事件
                 popup.show();
+                transferData.transfer(finalResult_time);
+
             }
         });
 
@@ -122,11 +125,11 @@ public class ContentAdapter extends BaseAdapter {
         ImageButton note_more;
         LinearLayout line;
     }
-//    public interface OpenMenu{
-//        void open(int position);
-//    }
-//    private OpenMenu openMenu;
-//    public void setOpenMenu(OpenMenu openMenu){
-//        this.openMenu=openMenu;
-//    }
+    public interface TransferData{
+        void transfer(String result_time);
+    }
+    private TransferData transferData;
+    public void setTransferData(TransferData transferData){
+        this.transferData=transferData;
+    }
 }

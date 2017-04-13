@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search_result_"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.qf.manager.search_result_Activity">
+    <TextView
+        android:layout_width="match_parent"
+        android:text="统计"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:background="@color/colorjz"
+        android:textColor="#fff"
+        android:layout_height="40dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:layout_width="0dp"
+            android:text="时间："
+            android:textSize="18dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="18dp"
+            android:text="2017-4-6  至  2017-4-9"
+            android:id="@+id/search_time"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:layout_width="0dp"
+            android:text="总收入："
+            android:id="@+id/typeName"
+            android:textSize="18dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="0dp"
+            android:textSize="18dp"
+            android:id="@+id/sum"
+            android:text="4521"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#9c9995"
+        android:layout_height="1dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="20dp"
+        android:text="清单："
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.example.qf.manager.View.MyListView
+                android:layout_width="match_parent"
+                android:id="@+id/listView_search"
+                android:scrollbars="none"
+                android:layout_height="wrap_content">
+
+            </com.example.qf.manager.View.MyListView>
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>
