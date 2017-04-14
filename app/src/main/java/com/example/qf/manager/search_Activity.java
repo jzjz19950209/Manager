@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.qf.manager.Model.Bean.User_data;
 
@@ -68,6 +69,10 @@ public class search_Activity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(date2.before(date1)){
+                    Toast.makeText(search_Activity.this, "开始时间不能早于结束时间！", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
                 UserMethodUtils.search_dataList = UserMethodUtils.searchDataByTime(UserMethodUtils.sql, UserMethodUtils.currentUserName, date1, date2);
                 Intent intent = new Intent(search_Activity.this, search_result_Activity.class);
                 intent.putExtra("searchType",searchType);

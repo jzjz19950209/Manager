@@ -29,8 +29,9 @@
     <DatePicker
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
+        android:theme="@android:style/Theme.Holo.Light"
         android:id="@+id/datePicker1"
-        android:layout_height="100dp"></DatePicker>
+        android:layout_height="150dp"></DatePicker>
     <TextView
         android:layout_width="match_parent"
         android:text="结束时间："
@@ -43,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
         android:id="@+id/datePicker2"
-        android:layout_height="100dp"></DatePicker>
+        android:theme="@android:style/Theme.Holo.Light"
+        android:layout_height="150dp"></DatePicker>
     <RadioGroup
         android:layout_width="match_parent"
         android:orientation="horizontal"

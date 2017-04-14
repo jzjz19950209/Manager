@@ -66,17 +66,17 @@ public class UserMethodUtils {
         String path=storgePath+"/"+"MyAccount";
         return path;
     }
-    public static void createFile(String fileName){
+    public static void createDir(){
         String str=getPath();
-        try {
+//        try {
             new File(str).mkdirs();
-            File file=new File(str,fileName);
-            if(!file.exists()){
-                file.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            //File file=new File(str,fileName);
+//            if(!file.exists()){
+//                file.createNewFile();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
     public static String getTime(){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd EEE");

@@ -197,11 +197,22 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         myTimeLineAdapter.setMyCallBack(new MyTimeLineAdapter.MyCallBack() {
             @Override
             public void click(int groupPosition, int childPosition) {
+                if(yearList.size()==0){
+                    noContent.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                    return;
+                }else {
+                    listView.setVisibility(View.VISIBLE);
+                }
                 UserMethodUtils.groupP=groupPosition;
                 UserMethodUtils.childP=childPosition;
-                UserMethodUtils.currentDate=yearList.get(groupPosition).getYear_name()+"-"+
-                        yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name();
-                List<Day> days = sort_day(yearList, groupPosition, childPosition);
+                List<Day> days = null;
+
+                UserMethodUtils.currentDate = yearList.get(groupPosition).getYear_name() + "-" +
+                            yearList.get(groupPosition).getMonthList().get(childPosition).getMonth_name();
+                days = sort_day(yearList, groupPosition, childPosition);
+
+
                 adapter=new ContentAdapter(yearList,days,list_Activity.this,groupPosition,childPosition);
                 ViewGroup.LayoutParams lp = listView.getLayoutParams();
                 int count = UserMethodUtils.DeleteContain(days).size();
@@ -309,6 +320,11 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 break;
             case R.id.search:
                 startActivity(new Intent(this,search_Activity.class));
+                break;
+            case R.id.Synchronized_to_could:
+
+                break;
+            case R.id.Synchronized_to_local:
                 break;
         }
         return super.onOptionsItemSelected(item);
