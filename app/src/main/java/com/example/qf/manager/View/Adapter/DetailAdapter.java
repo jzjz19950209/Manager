@@ -53,6 +53,7 @@ public class DetailAdapter extends BaseAdapter {
             viewHolder.type= (TextView) convertView.findViewById(R.id.type);
             viewHolder.note= (TextView) convertView.findViewById(R.id.note);
             viewHolder.money= (TextView) convertView.findViewById(R.id.money);
+            viewHolder.useType= (TextView) convertView.findViewById(R.id.useType);
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
@@ -63,11 +64,12 @@ public class DetailAdapter extends BaseAdapter {
         viewHolder.date.setText(user_dataList.get(position).getTime());
         viewHolder.type.setText(user_dataList.get(position).isIncome()==1?"收入":"支出");
         viewHolder.money.setText(""+user_dataList.get(position).getMoney());
+        viewHolder.useType.setText(user_dataList.get(position).getUseType());
         viewHolder.note.setText(user_dataList.get(position).getNotes());
         return convertView;
     }
     class ViewHolder{
-        TextView num,date,type,money,note,id;
+        TextView num,date,type,money,note,id,useType;
     }
 //    interface OnTransmitData{
 //        void Transmit(int id,String date,String type,double money,String notes);

@@ -35,7 +35,11 @@ public class search_result_Activity extends AppCompatActivity {
         initData();
     }
     private void initData(){
+        time.setText(startDate+" 至 "+endDate);
         List<User_data> list = UserMethodUtils.search_dataList;
+        if(list==null){
+            return;
+        }
         List<User_data> list_temp =new ArrayList<>();
         double sum=0;
         int isIncome;
@@ -71,7 +75,7 @@ public class search_result_Activity extends AppCompatActivity {
         final SearchAdapter adapter=new SearchAdapter(this,list_temp);
         myListView.setAdapter(adapter);
 
-        time.setText(startDate+" 至 "+endDate);
+
         search_sum.setText(""+sum);
         switch (searchType){
             case 1:

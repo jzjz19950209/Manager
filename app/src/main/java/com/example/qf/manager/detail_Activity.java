@@ -68,7 +68,6 @@ public class detail_Activity extends AppCompatActivity {
 //            menu.add(Menu.NONE,1,1,"删除");
 //        }
 //    }
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -105,6 +104,9 @@ public class detail_Activity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         updateData();
+        if(data.size()==0){
+            imageView.setVisibility(View.VISIBLE);
+        }
     }
     private void updateData(){
         list_Activity.instance.findLocalPresenter.initData();

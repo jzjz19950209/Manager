@@ -98,10 +98,8 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 }else {
                     fab.show();
                 }
-
             }
         });
-
     }
 
     @Override
@@ -112,6 +110,9 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         title_p.setText(UserMethodUtils.getTime());
         if (UserMethodUtils.groupP!=-1&&UserMethodUtils.childP!=-1){
             myTimeLineAdapter.myCallBack.click(UserMethodUtils.groupP,UserMethodUtils.childP);
+        }
+        if (myTimeLineAdapter!=null){
+            myTimeLineAdapter.notifyDataSetChanged();
         }
 
     }

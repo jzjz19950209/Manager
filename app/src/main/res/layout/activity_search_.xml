@@ -46,6 +46,8 @@
         android:id="@+id/datePicker2"
         android:theme="@android:style/Theme.Holo.Light"
         android:layout_height="150dp"></DatePicker>
+
+
     <RadioGroup
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -89,6 +91,25 @@
             android:layout_marginRight="10dp"
             android:layout_height="match_parent" />
     </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="30dp">
+        <TextView
+            android:layout_width="0dp"
+            android:text="分类："
+            android:textSize="18dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <Spinner
+            android:layout_width="0dp"
+            android:id="@+id/spinnerSearch"
+            android:layout_weight="1"
+            android:layout_height="match_parent"></Spinner>
+    </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:id="@+id/search"

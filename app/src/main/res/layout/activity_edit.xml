@@ -18,15 +18,14 @@
             android:src="@drawable/ic_done_white"
             android:layout_height="match_parent" />
     </RelativeLayout>
-
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:textSize="20dp"-->
-        <!--android:id="@+id/currentDate"-->
-        <!--android:layout_height="40dp" />-->
-<LinearLayout
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
@@ -36,100 +35,66 @@
         android:layout_width="match_parent"
         android:id="@+id/datePicker"
         android:theme="@android:style/Theme.Holo.Light"
-        android:layout_height="100dp"></DatePicker>
-    <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="match_parent">-->
-    <!--<TextView-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:textSize="20dp"-->
-        <!--android:gravity="center_horizontal|center_vertical"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="年"/>-->
-    <!--<EditText-->
-        <!--android:layout_width="0dp"-->
-        <!--android:inputType="number"-->
-        <!--android:gravity="center"-->
-        <!--android:layout_weight="2"-->
-        <!--android:id="@+id/year"-->
-        <!--android:layout_height="wrap_content" />-->
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textSize="20dp"-->
-            <!--android:gravity="center_horizontal|center_vertical"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="/月"/>-->
-        <!--<EditText-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="2"-->
-            <!--android:gravity="center"-->
-            <!--android:inputType="number"-->
-            <!--android:id="@+id/month"-->
-            <!--android:layout_height="wrap_content" />-->
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="match_parent">-->
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textSize="20dp"-->
-            <!--android:gravity="center_horizontal|center_vertical"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="/日"/>-->
-        <!--<EditText-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="2"-->
-            <!--android:gravity="center"-->
-            <!--android:id="@+id/day"-->
-            <!--android:inputType="number"-->
-            <!--android:layout_height="wrap_content" />-->
-    <!--</LinearLayout>-->
-</LinearLayout>
-    <RadioGroup
+        android:layout_height="200dp"></DatePicker>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="right"
-        android:id="@+id/rg"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:paddingRight="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:layout_height="30dp">
+
+    <RadioGroup
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:id="@+id/rg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
             android:text="收入"
+            android:gravity="center"
             android:textSize="18dp"
             android:layout_height="wrap_content" />
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_marginRight="20dp"
+            android:gravity="center"
             android:id="@+id/in"
             android:layout_height="wrap_content" />
         <TextView
             android:layout_width="wrap_content"
             android:text="支出"
+            android:gravity="center"
             android:textSize="18dp"
             android:layout_height="wrap_content" />
         <RadioButton
             android:layout_width="wrap_content"
             android:id="@+id/out"
+            android:gravity="center"
             android:layout_height="wrap_content" />
-
     </RadioGroup>
+    <TextView
+        android:layout_width="0dp"
+        android:text="分类:"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+    <Spinner
+        android:layout_width="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="2"
+        android:id="@+id/spinner_edit"
+        android:layout_height="match_parent">
+    </Spinner>
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:textSize="18dp"
         android:text="备注:"/>
@@ -167,5 +132,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content" />
-
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

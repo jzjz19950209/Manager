@@ -44,6 +44,7 @@ public class login_Activity extends AppCompatActivity {
         UserMethodUtils.createDir();
         //创建数据库文件
         UserMethodUtils.CreateDataBase_user();
+        UserMethodUtils.CreateDataBase_useType();
         button_login = (Button) findViewById(R.id.button_login);
         button_register = (Button) findViewById(R.id.button_register);
         button_clear = (Button) findViewById(R.id.button_clear);

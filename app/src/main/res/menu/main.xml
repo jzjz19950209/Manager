@@ -19,12 +19,12 @@
     <item
         android:id="@+id/Synchronized_to_could"
         android:icon="@mipmap/ic_launcher"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:title="本地同步到后端" />
     <item
         android:id="@+id/Synchronized_to_local"
         android:icon="@mipmap/ic_launcher"
-        android:orderInCategory="99"
+        android:orderInCategory="102"
         android:title="后端同步到本地" />
 
 </menu>

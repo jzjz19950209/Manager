@@ -12,20 +12,29 @@ public class User_data extends BmobObject {
     private String notes;
     private double money;
     private int isIncome;
+    private String useType;
     public User_data(){}
 
-
-    public User_data(int id, String userName, String time, String notes, double money, int isIncome) {
+    public User_data(int id, String userName, String time, String notes, double money, int isIncome, String useType) {
         this.id = id;
         this.userName = userName;
         this.time = time;
         this.notes = notes;
         this.money = money;
         this.isIncome = isIncome;
+        this.useType = useType;
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getUseType() {
+        return useType;
+    }
+
+    public void setUseType(String useType) {
+        this.useType = useType;
     }
 
     public void setId(int id) {

@@ -2,9 +2,6 @@ package com.example.qf.manager.Model.Bean;
 
 import cn.bmob.v3.BmobObject;
 
-/**
- * Created by qf on 2016/10/8.
- */
 public class User extends BmobObject {
     private String userName;
     private String userPassword;
