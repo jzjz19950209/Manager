@@ -333,19 +333,18 @@ public class UserMethodUtils {
         values.put("username",username);
         values.put("useType",useType);
         List<String> strings = searchUseType(db, username, isIncome_type);
-
         if (strings!=null){
             if(!strings.contains(useType)){
                 if (isIncome_type==1){
                     db.insert("useType_income", null, values);
-                }else if(isIncome_type==2){
+                }else if(isIncome_type==0){
                     db.insert("useType_expend", null, values);
                 }
             }
         }else {
             if (isIncome_type==1){
                 db.insert("useType_income", null, values);
-            }else if (isIncome_type==2){
+            }else if (isIncome_type==0){
                 db.insert("useType_expend", null, values);
             }
         }

@@ -182,6 +182,7 @@ public class edit_Activity extends AppCompatActivity implements IEditActivityVie
                             spinnerData.add(spinnerData.size()-1,result);
                             spinnerAdapter.notifyDataSetChanged();
                             spinnerResult=result;
+                            return;
                         }
                     });
                     builder.show();
