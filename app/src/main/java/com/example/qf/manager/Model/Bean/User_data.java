@@ -81,4 +81,34 @@ public class User_data extends BmobObject {
     public void setIncome(int income) {
         isIncome = income;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+//            if(obj==null){
+//                return false;
+//            }else {
+//                if(this == obj){
+//                    return true;
+//                }
+//                if (obj instanceof User_data) {
+//                    User_data user_data = (User_data) obj;
+//                    return  (user_data.id==this.id);
+//                }
+//            }
+//            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User_data{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", time='" + time + '\'' +
+                ", notes='" + notes + '\'' +
+                ", money=" + money +
+                ", isIncome=" + isIncome +
+                ", useType='" + useType + '\'' +
+                '}';
+    }
 }

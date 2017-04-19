@@ -43,6 +43,11 @@ import com.example.qf.manager.View.MyScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+
 public class list_Activity extends AppCompatActivity implements IListActivityView,PopupMenu.OnMenuItemClickListener{
     private DrawerLayout drawerlayout;
     private TextView title_p;
@@ -56,6 +61,7 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
     private MyTimeLineAdapter myTimeLineAdapter;
     private ImageView noContent;
     private String tempTime;
+    private int success,failure;
     private DownLoadPresenter downLoadPresenter=new DownLoadPresenter(this);
     public FindLocalPresenter findLocalPresenter=new FindLocalPresenter(this);
     List<String> yearName = new ArrayList<>();
@@ -323,13 +329,16 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
                 startActivity(new Intent(this,search_Activity.class));
                 break;
             case R.id.Synchronized_to_could:
-
+                Synchronized_to_could();
                 break;
             case R.id.Synchronized_to_local:
+                Synchronized_to_local();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -378,6 +387,60 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
             default:
                 return false;
         }
+
+    }
+    private void Synchronized_to_could(){
+        success=0;failure=0;
+        final BmobQuery<User_data> bmobQuery=new BmobQuery<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<User_data> local_list = UserMethodUtils.searchData(UserMethodUtils.sql, UserMethodUtils.currentUserName);
+                final List<User_data> netWork_list=new ArrayList<User_data>();
+                bmobQuery.findObjects(new FindListener<User_data>() {
+                    @Override
+                    public void done(List<User_data> list, BmobException e) {
+                        netWork_list.addAll(list);
+                        if(local_list.size()==0){
+                            for (User_data user_data:local_list){
+                                AddDataToNetWork(user_data);
+                            }
+                        }else {
+                            for(User_data user_data:local_list){
+                                if(!netWork_list.contains(user_data)){
+
+                                    AddDataToNetWork(user_data);
+                                }
+                            }
+                        }
+                    }
+                });
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(list_Activity.this, "成功同步"+success+"条，"+"失败"+failure+"条！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        }).start();
+
+    }
+    private void AddDataToNetWork(User_data user_data){
+        user_data.save(new SaveListener<String>() {
+            @Override
+            public void done(String objectId,BmobException e) {
+                if(e==null){
+                   success++;
+                }else {
+                    failure++;
+                }
+            }
+        });
+    }
+
+    private void Synchronized_to_local() {
 
     }
 }
