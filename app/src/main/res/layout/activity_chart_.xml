@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_chart_"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context="com.example.qf.manager.chart_Activity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorjz"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="柱状表"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <com.github.mikephil.charting.charts.BarChart
+        android:layout_width="match_parent"
+        android:id="@+id/barChart"
+        android:layout_height="300dp">
+
+    </com.github.mikephil.charting.charts.BarChart>
+
+</LinearLayout>

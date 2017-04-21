@@ -1,10 +1,12 @@
 package com.example.qf.manager;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,18 +23,29 @@ public class search_result_Activity extends AppCompatActivity {
     private MyListView myListView;
     private String startDate,endDate;
     private int searchType;
+    private Button toChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result_);
         time = (TextView) findViewById(R.id.search_time);
         typeName= (TextView) findViewById(R.id.typeName);
+        toChart= (Button) findViewById(R.id.toChart);
         search_sum= (TextView) findViewById(R.id.sum);
         myListView = (MyListView) findViewById(R.id.listView_search);
         searchType = getIntent().getIntExtra("searchType",1);
         startDate=getIntent().getStringExtra("startDate");
         endDate=getIntent().getStringExtra("endDate");
         initData();
+        toChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(search_result_Activity.this, chart_Activity.class);
+                intent.putExtra("startDate",startDate);
+                intent.putExtra("endDate",endDate);
+                startActivity(intent);
+            }
+        });
     }
     private void initData(){
         time.setText(startDate+" 至 "+endDate);

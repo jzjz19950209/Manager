@@ -62,15 +62,33 @@
         android:layout_width="match_parent"
         android:background="#9c9995"
         android:layout_height="1dp"/>
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:textSize="20dp"
-        android:text="清单："
-        android:layout_marginLeft="10dp"
-        android:layout_height="wrap_content" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:text="清单："
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="0dp"
+            android:background="@null"
+            android:gravity="center"
+            android:text="查看该时间段支出柱状图"
+            android:id="@+id/toChart"
+            android:textSize="18dp"
+            android:textColor="#9c9995"
+            android:layout_weight="2"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="5dp"
         android:layout_height="match_parent">
         <LinearLayout

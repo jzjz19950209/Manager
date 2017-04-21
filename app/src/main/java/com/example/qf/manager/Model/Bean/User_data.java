@@ -84,19 +84,20 @@ public class User_data extends BmobObject {
 
     @Override
     public boolean equals(Object obj) {
-//            if(obj==null){
-//                return false;
-//            }else {
-//                if(this == obj){
-//                    return true;
-//                }
-//                if (obj instanceof User_data) {
-//                    User_data user_data = (User_data) obj;
-//                    return  (user_data.id==this.id);
-//                }
-//            }
-//            return false;
-        return true;
+            if(obj==null){
+                return false;
+            }else {
+                if(this == obj){
+                    return true;
+                }
+                if (obj instanceof User_data) {
+                    User_data user_data = (User_data) obj;
+                    return  (user_data.id==this.id&&user_data.userName.equals(this.userName)
+                    &&user_data.time.equals(this.time)&&user_data.isIncome==this.isIncome&&user_data.money==this.money
+                    &&user_data.notes.equals(this.notes));
+                }
+            }
+            return false;
     }
 
     @Override

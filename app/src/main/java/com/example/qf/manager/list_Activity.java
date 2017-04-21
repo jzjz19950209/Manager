@@ -47,6 +47,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import rx.Subscription;
 
 public class list_Activity extends AppCompatActivity implements IListActivityView,PopupMenu.OnMenuItemClickListener{
     private DrawerLayout drawerlayout;
@@ -389,19 +390,31 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
         }
 
     }
+    private List<User_data> getNetWorkData(){
+        final BmobQuery<User_data> bmobQuery=new BmobQuery<>();
+
+        final List<User_data> netWork_list=new ArrayList<User_data>();
+        bmobQuery.findObjects(new FindListener<User_data>() {
+            @Override
+            public void done(List<User_data> list, BmobException e) {
+                netWork_list.addAll(list);
+            }
+        });
+        return netWork_list;
+    }
     private void Synchronized_to_could(){
         success=0;failure=0;
-        final BmobQuery<User_data> bmobQuery=new BmobQuery<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
+                BmobQuery<User_data> bmobQuery=new BmobQuery<>();
                 final List<User_data> local_list = UserMethodUtils.searchData(UserMethodUtils.sql, UserMethodUtils.currentUserName);
-                final List<User_data> netWork_list=new ArrayList<User_data>();
+                final List<User_data> netWork_list=new ArrayList<>();
                 bmobQuery.findObjects(new FindListener<User_data>() {
                     @Override
                     public void done(List<User_data> list, BmobException e) {
                         netWork_list.addAll(list);
-                        if(local_list.size()==0){
+                        if(netWork_list.size()==0){
                             for (User_data user_data:local_list){
                                 AddDataToNetWork(user_data);
                             }
@@ -428,12 +441,12 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
 
     }
     private void AddDataToNetWork(User_data user_data){
-        user_data.save(new SaveListener<String>() {
+         user_data.save(new SaveListener<String>() {
             @Override
-            public void done(String objectId,BmobException e) {
-                if(e==null){
-                   success++;
-                }else {
+            public void done(String objectId, BmobException e) {
+                if (e == null) {
+                    success++;
+                } else {
                     failure++;
                 }
             }
@@ -441,6 +454,47 @@ public class list_Activity extends AppCompatActivity implements IListActivityVie
     }
 
     private void Synchronized_to_local() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BmobQuery<User_data> bmobQuery=new BmobQuery<>();
+                final List<User_data> local_list = new ArrayList<>();
+                List<User_data> temp =UserMethodUtils.searchData(UserMethodUtils.sql, UserMethodUtils.currentUserName);
+                if (temp!=null){
+                    local_list.addAll(temp);
+                }
+                final List<User_data> netWork_list=new ArrayList<>();
+                bmobQuery.findObjects(new FindListener<User_data>() {
+                    @Override
+                    public void done(List<User_data> list, BmobException e) {
+                        netWork_list.addAll(list);
+                        if(local_list.size()==0){
+                            for (User_data user_data:netWork_list){
+                                AddDataToLocal(user_data);
+                            }
+                        }else {
+                            for (User_data user_data:netWork_list){
+                                if (!local_list.contains(user_data)){
+                                    AddDataToLocal(user_data);
+                                }
 
+                            }
+                        }
+                    }
+                });
+
+            }
+        }).start();
+
+    }
+    private void AddDataToLocal(User_data user_data){
+        String userName = user_data.getUserName();
+        double money = user_data.getMoney();
+        String time = user_data.getTime();
+        int id = user_data.getId();
+        String notes = user_data.getNotes();
+        String useType = user_data.getUseType();
+        int income = user_data.isIncome();
+        UserMethodUtils.AddData(UserMethodUtils.sql,userName,money,notes,income,useType,time,id,true);
     }
 }

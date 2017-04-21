@@ -38,6 +38,7 @@
         <activity android:name=".detail_Activity" />
         <activity android:name=".search_Activity" />
         <activity android:name=".search_result_Activity" />
+        <activity android:name=".chart_Activity"></activity>
     </application>
 
 </manifest>

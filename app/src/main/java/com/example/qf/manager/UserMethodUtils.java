@@ -146,6 +146,9 @@ public class UserMethodUtils {
         }
     }
     public static void AddData(SQLiteDatabase db, String userName, double money, String notes, int isIncome, String useType,String time){
+        AddData(db,userName,money,notes,isIncome,useType,time,0,false);
+    }
+    public static void AddData(SQLiteDatabase db, String userName, double money, String notes, int isIncome, String useType,String time,int id,boolean b){
         ContentValues values=new ContentValues();
         values.put("username",userName);
         values.put("money",money);
@@ -153,6 +156,10 @@ public class UserMethodUtils {
         values.put("isIncome",isIncome);
         values.put("useType",useType);
         values.put("time",time);
+        if (b){
+            values.put("_id",id);
+        }
+
         long insert = db.insert(userName, null, values);
 
     }
